@@ -73,7 +73,7 @@ CDlgBase::CDlgBase(UINT nIDTemplate, CWnd* pParent /*=NULL*/)
 
 	m_strBkImg = _T("");
 	m_crlBack = RGB(0,0,0);
-	m_nBackTranslucent = 255;	// ±³¾°Í¸Ã÷¶È,255±íÊ¾²»Í¸Ã÷,1±íÊ¾È«Í¸Ã÷
+	m_nBackTranslucent = 255;	// èƒŒæ™¯é€æ˜åº¦,255è¡¨ç¤ºä¸é€æ˜,1è¡¨ç¤ºå…¨é€æ˜
 	m_bTopMost = false;
 
 	m_nTooltipCtrlID = 0;
@@ -81,14 +81,14 @@ CDlgBase::CDlgBase(UINT nIDTemplate, CWnd* pParent /*=NULL*/)
 	m_pTrayHandler = NULL;
 	m_strTrayMenuXml = _T("");
 
-	// ³õÊ¼»¯Í¼±ê
+	// åˆå§‹åŒ–å›¾æ ‡
 	CString strTrayIcon = DuiSystem::Instance()->GetSkin(_T("IDB_TRAY_ICON"));
 	if(!strTrayIcon.IsEmpty())
 	{
-		if(strTrayIcon.Find(_T(".")) != -1)	// ¼ÓÔØÍ¼±êÎÄ¼ş
+		if(strTrayIcon.Find(_T(".")) != -1)	// åŠ è½½å›¾æ ‡æ–‡ä»¶
 		{
 			DuiSystem::Instance()->LoadIconFile(strTrayIcon, m_hIcon);
-		}else	// ¼ÓÔØÍ¼±ê×ÊÔ´
+		}else	// åŠ è½½å›¾æ ‡èµ„æº
 		{
 			UINT nResourceID = _ttoi(strTrayIcon);
 			LoadIconFromIDResource(nResourceID, m_hIcon);
@@ -98,7 +98,7 @@ CDlgBase::CDlgBase(UINT nIDTemplate, CWnd* pParent /*=NULL*/)
 
 CDlgBase::~CDlgBase()
 {
-	// ½áÊø¶¨Ê±Æ÷
+	// ç»“æŸå®šæ—¶å™¨
 	CTimer::KillTimer();
 
 	if (m_hIcon)
@@ -163,7 +163,7 @@ CDlgBase::~CDlgBase()
 	}
 }
 
-// Í¼Æ¬ÊôĞÔµÄÊµÏÖ
+// å›¾ç‰‡å±æ€§çš„å®ç°
 DUI_IMAGE_ATTRIBUTE_IMPLEMENT(CDlgBase, Shadow, 1)
 
 BEGIN_MESSAGE_MAP(CDlgBase, CDialog)
@@ -202,7 +202,7 @@ BEGIN_MESSAGE_MAP(CDlgBase, CDialog)
 	ON_REGISTERED_MESSAGE(WM_CHECK_ITS_ME, OnCheckItsMe)
 END_MESSAGE_MAP()
 
-// ÉèÖÃ×îĞ¡´°¿Ú´óĞ¡
+// è®¾ç½®æœ€å°çª—å£å¤§å°
 void CDlgBase::SetMinSize(int iWidth, int iHeight)
 {
 	m_MinSize.cx = iWidth;
@@ -228,19 +228,19 @@ void CDlgBase::OnGetMinMaxInfo(MINMAXINFO* lpMMI)
 	lpMMI->ptMaxSize.y = rc.Height();
 }
 
-// ¸ù¾İ¿Ø¼şÃû´´½¨¿Ø¼şÊµÀı
+// æ ¹æ®æ§ä»¶ååˆ›å»ºæ§ä»¶å®ä¾‹
 CControlBase* CDlgBase::_CreateControlByName(LPCTSTR lpszName)
 {
 	return DuiSystem::CreateControlByName(lpszName, GetSafeHwnd(), this);
 }
 
-// ÅĞ¶Ïµ±Ç°ÊÇ·ñÔÚÖ÷Ïß³Ì
+// åˆ¤æ–­å½“å‰æ˜¯å¦åœ¨ä¸»çº¿ç¨‹
 void CDlgBase::TestMainThread()
 {
-    // µ±Äã¿´µ½Õâ¸ö¶«Î÷µÄÊ±ºò£¬ÎÒ²»ĞÒµÄ¸æËßÄã£¬ÄãµÄÆäËûÏß³ÌÔÚË¢½çÃæ
-    // ÕâÊÇÒ»¼şºÜÎ£ÏÕµÄÊÂÇé
+    // å½“ä½ çœ‹åˆ°è¿™ä¸ªä¸œè¥¿çš„æ—¶å€™ï¼Œæˆ‘ä¸å¹¸çš„å‘Šè¯‰ä½ ï¼Œä½ çš„å…¶ä»–çº¿ç¨‹åœ¨åˆ·ç•Œé¢
+    // è¿™æ˜¯ä¸€ä»¶å¾ˆå±é™©çš„äº‹æƒ…
     DWORD dwCurThreadID = GetCurrentThreadId();
-    BOOL bOK = (m_nMainThreadId == dwCurThreadID); // µ±Ç°Ïß³ÌºÍ¹¹Ôì¶ÔÏóÊ±µÄÏß³ÌÒ»ÖÂ
+    BOOL bOK = (m_nMainThreadId == dwCurThreadID); // å½“å‰çº¿ç¨‹å’Œæ„é€ å¯¹è±¡æ—¶çš„çº¿ç¨‹ä¸€è‡´
 	if(!bOK)
 	{
 		DuiSystem::LogEvent(LOG_LEVEL_ERROR, _T("TestMainThread failed"));
@@ -254,17 +254,17 @@ BOOL CDlgBase::OnInitDialog()
 {
 	CDialog::OnInitDialog();
 
-	SetIcon(m_hIcon, TRUE);			// ÉèÖÃ´óÍ¼±ê
-	SetIcon(m_hIcon, FALSE);		// ÉèÖÃĞ¡Í¼±ê
+	SetIcon(m_hIcon, TRUE);			// è®¾ç½®å¤§å›¾æ ‡
+	SetIcon(m_hIcon, FALSE);		// è®¾ç½®å°å›¾æ ‡
 
-	// ¼ÓÔØ´°¿ÚµÄXMLÎÄ¼ş
+	// åŠ è½½çª—å£çš„XMLæ–‡ä»¶
 	DuiXmlDocument xmlDoc;
 	DuiXmlNode pDlgElem;
 
 	BOOL bLoadXml = DuiSystem::Instance()->LoadXmlFile(xmlDoc, m_strXmlFile);
 	if(!bLoadXml)
 	{
-		if(!m_strXmlContent.IsEmpty())	// ¼ÓÔØXMLÄÚÈİ
+		if(!m_strXmlContent.IsEmpty())	// åŠ è½½XMLå†…å®¹
 		{
 			bLoadXml = xmlDoc.load(m_strXmlContent);
 		}
@@ -275,15 +275,15 @@ BOOL CDlgBase::OnInitDialog()
 		pDlgElem = xmlDoc.child(_T("dlg"));//RootElement();
 		if(pDlgElem)
 		{
-			// ¼ÓÔØdlg½ÚµãÊôĞÔ
+			// åŠ è½½dlgèŠ‚ç‚¹å±æ€§
 			Load(pDlgElem);
-			// ¸üĞÂ´°¿Ú´óĞ¡
+			// æ›´æ–°çª—å£å¤§å°
 			SetMinSize(m_MinSize.cx, m_MinSize.cy);
 			SetRect(CRect(0, 0, m_MinSize.cx, m_MinSize.cy));
 		}
 	}
 
-	// ³õÊ¼»¯¶Ô»°¿ò×ÔÉíµÄÔ¤ÉèÖµÊôĞÔ
+	// åˆå§‹åŒ–å¯¹è¯æ¡†è‡ªèº«çš„é¢„è®¾å€¼å±æ€§
 	InitDialogValue();
 
 	SetWindowText(m_strTitle);
@@ -306,7 +306,7 @@ BOOL CDlgBase::OnInitDialog()
 
 	if(m_bTopMost)
 	{
-		// ´°¿ÚÏÔÊ¾ÔÚ×ÀÃæµÄ×îÇ°Ãæ
+		// çª—å£æ˜¾ç¤ºåœ¨æ¡Œé¢çš„æœ€å‰é¢
 		::SetWindowPos(m_hWnd, HWND_TOPMOST, 0,0,m_MinSize.cx, m_MinSize.cy, SWP_HIDEWINDOW | SWP_NOMOVE);
 	}else
 	{
@@ -316,7 +316,7 @@ BOOL CDlgBase::OnInitDialog()
 	CRect rc;
 	GetClientRect(rc);
 
-	// Ê¹ÓÃXML½Úµã³õÊ¼»¯´°¿Ú»ù´¡¿Ø¼şºÍÆÕÍ¨¿Ø¼ş
+	// ä½¿ç”¨XMLèŠ‚ç‚¹åˆå§‹åŒ–çª—å£åŸºç¡€æ§ä»¶å’Œæ™®é€šæ§ä»¶
 	if(pDlgElem)
 	{
 		DuiXmlNode pBaseElem = pDlgElem.child(_T("base"));
@@ -331,37 +331,37 @@ BOOL CDlgBase::OnInitDialog()
 			InitUI(rc, pBodyElem);
 		}
 
-		// ³õÊ¼»¯Ô¤ÉèÖµµÄ¿Ø¼şÖµ
+		// åˆå§‹åŒ–é¢„è®¾å€¼çš„æ§ä»¶å€¼
 		InitControlValue();
 	}
 
 	if(!m_bAppWin)
 	{
-		// ²»ÊÇÖ÷´°¿Ú(ÔÚÈÎÎñÀ¸²»»áÏÔÊ¾³ö´Ë´°¿Ú),ÔòÉèÖÃTOOLWINDOWSÊôĞÔ
+		// ä¸æ˜¯ä¸»çª—å£(åœ¨ä»»åŠ¡æ ä¸ä¼šæ˜¾ç¤ºå‡ºæ­¤çª—å£),åˆ™è®¾ç½®TOOLWINDOWSå±æ€§
 		//::SetWindowLong(m_hWnd, GWL_EXSTYLE, GetWindowLong(m_hWnd,GWL_EXSTYLE) | WS_EX_TOOLWINDOW);
-		// ½â¾öNotifyMsg´°¿ÚÔÚÈÎÎñÀ¸ÏÔÊ¾µÄÎÊÌâ,ĞèÒªÈ¥µôAPPWINDOWÊôĞÔ,ÔÙÔö¼ÓTOOLWINDOWÊôĞÔ
+		// è§£å†³NotifyMsgçª—å£åœ¨ä»»åŠ¡æ æ˜¾ç¤ºçš„é—®é¢˜,éœ€è¦å»æ‰APPWINDOWå±æ€§,å†å¢åŠ TOOLWINDOWå±æ€§
 		ModifyStyleEx(WS_EX_APPWINDOW, WS_EX_TOOLWINDOW);
 	}
 
-	// ÉèÖÃ´°¿Ú±³¾°Í¸Ã÷ÊôĞÔ
+	// è®¾ç½®çª—å£èƒŒæ™¯é€æ˜å±æ€§
 	//HWND hWnd = GetSafeHwnd();
 	//SetWindowLong(hWnd,GWL_EXSTYLE,GetWindowLong(hWnd,GWL_EXSTYLE) | WS_EX_TRANSPARENT);
 
-	// ¼ÓÔØ±³¾°Æ¤·ô
+	// åŠ è½½èƒŒæ™¯çš®è‚¤
 	InitWindowBkSkin();
 
-	CenterWindow();
+	CenterWindow(GetDesktopWindow());//é»˜è®¤ç©ºå‚ç›¸å½“äºä¼ å…¥NULLï¼Œè¡¨ç¤ºç›¸å¯¹äºçˆ¶çª—å£å±…ä¸­ï¼Œç›¸å¯¹äºWindowsæ¡Œé¢å±…ä¸­éœ€è¦ä¼ å…¥GetDesktopWindow()
 	ShowWindow(SW_SHOW);
 
-	// ÏÔÊ¾´°¿ÚÒõÓ°
-	if(m_pImageShadow != NULL)	// ¾Å¹¬¸ñ·½Ê½µÄÍ¼Æ¬ÒõÓ°
+	// æ˜¾ç¤ºçª—å£é˜´å½±
+	if(m_pImageShadow != NULL)	// ä¹å®«æ ¼æ–¹å¼çš„å›¾ç‰‡é˜´å½±
 	{
 		CWndShadow::Initialize(AfxGetInstanceHandle()); 
 		m_Shadow.Create(GetSafeHwnd());
 		m_Shadow.SetShadowImage(m_pImageShadow, m_nShadowWLT, m_nShadowHLT, m_nShadowWRB, m_nShadowHRB);
 		m_Shadow.SetPosition(0, 0);
 	}else
-	if(m_nShadowSize > 0)	// Ëã·¨ÒõÓ°
+	if(m_nShadowSize > 0)	// ç®—æ³•é˜´å½±
 	{
 		CWndShadow::Initialize(AfxGetInstanceHandle()); 
 		m_Shadow.Create(GetSafeHwnd());
@@ -369,15 +369,15 @@ BOOL CDlgBase::OnInitDialog()
 		m_Shadow.SetPosition(0, 0);
 	}
 
-	//Æô¶¯¶¨Ê±Æ÷
+	//å¯åŠ¨å®šæ—¶å™¨
 	m_uTimerAnimation = CTimer::SetTimer(30);
 
-	// ³õÊ¼»¯Tooltip
+	// åˆå§‹åŒ–Tooltip
 	m_wndToolTip.Create(this);
 
 	m_bInit = true;
 
-	// µ÷ÓÃÊÂ¼ş´¦Àí¶ÔÏóµÄ³õÊ¼»¯º¯Êı
+	// è°ƒç”¨äº‹ä»¶å¤„ç†å¯¹è±¡çš„åˆå§‹åŒ–å‡½æ•°
 	if(m_pDuiHandler)
 	{
 		m_pDuiHandler->OnInit();
@@ -386,7 +386,7 @@ BOOL CDlgBase::OnInitDialog()
 	return TRUE;
 }
 
-// ¼ÓÔØ´°¿Ú»ù´¡¿Ø¼ş
+// åŠ è½½çª—å£åŸºç¡€æ§ä»¶
 void CDlgBase::InitBaseUI(CRect rcClient, DuiXmlNode pNode)
 {
 	if(pNode)
@@ -402,7 +402,7 @@ void CDlgBase::InitBaseUI(CRect rcClient, DuiXmlNode pNode)
 					pControl->Load(pControlElem);
 					if(pControl->IsClass(CArea::GetClassName()))
 					{
-						// Area²»ÄÜÏìÓ¦Êó±ê,±ØĞë¼Óµ½AreaÁĞ±íÖĞ
+						// Areaä¸èƒ½å“åº”é¼ æ ‡,å¿…é¡»åŠ åˆ°Areaåˆ—è¡¨ä¸­
 						m_vecBaseArea.push_back(pControl);
 					}else
 					{
@@ -414,7 +414,7 @@ void CDlgBase::InitBaseUI(CRect rcClient, DuiXmlNode pNode)
 	}
 }
 
-// ³õÊ¼»¯´°¿Ú¿Ø¼ş
+// åˆå§‹åŒ–çª—å£æ§ä»¶
 void CDlgBase::InitUI(CRect rcClient, DuiXmlNode pNode)
 {
 	CRect rcTemp;
@@ -422,25 +422,25 @@ void CDlgBase::InitUI(CRect rcClient, DuiXmlNode pNode)
 	int nStartY = 0;
 	CControlBase * pControlBase = NULL;
 
-	// Ö÷´°¿ÚµÄÍ¸Ã÷¶È½¥±ä²ãÃÉ°å(¸ù¾İ´°¿ÚµÄframeÊôĞÔÀ´ÉèÖÃ)
+	// ä¸»çª—å£çš„é€æ˜åº¦æ¸å˜å±‚è’™æ¿(æ ¹æ®çª—å£çš„frameå±æ€§æ¥è®¾ç½®)
 	if(!m_strFramePicture.IsEmpty())
 	{
 		pControlBase = new CDuiPicture(GetSafeHwnd(), this, FRAME_MAINWND, rcClient);
 		((CDuiPicture*)pControlBase)->OnAttributeImage(m_strFramePicture, FALSE);
 		if(m_nFrameWLT != 0)
 		{
-			// ¾Å¹¬¸ñÄ£Ê½
+			// ä¹å®«æ ¼æ¨¡å¼
 			((CDuiPicture*)pControlBase)->SetShowModeMID(m_nFrameWLT, m_nFrameHLT, m_nFrameWRB, m_nFrameHRB);
 		}else
 		{
-			// ±ß¿òÄ£Ê½
+			// è¾¹æ¡†æ¨¡å¼
 			((CDuiPicture*)pControlBase)->SetShowMode(enSMFrame, m_nFrameSize);
 		}
 		pControlBase->OnAttributePosChange(_T("0,0,-0,-0"), FALSE);
 		m_vecBaseArea.push_back(pControlBase);
 	}
 
-	// ¼ÓÔØËùÓĞ´°¿Ú¿Ø¼ş
+	// åŠ è½½æ‰€æœ‰çª—å£æ§ä»¶
 	if(pNode)
 	{
 		for (DuiXmlNode pControlElem = pNode.first_child(); pControlElem; pControlElem=pControlElem.next_sibling())
@@ -454,12 +454,12 @@ void CDlgBase::InitUI(CRect rcClient, DuiXmlNode pNode)
 					pControl->Load(pControlElem);
 					if(pControl->IsClass(CArea::GetClassName()))
 					{
-						// Area²»ÄÜÏìÓ¦Êó±ê,±ØĞë¼Óµ½AreaÁĞ±íÖĞ
+						// Areaä¸èƒ½å“åº”é¼ æ ‡,å¿…é¡»åŠ åˆ°Areaåˆ—è¡¨ä¸­
 						m_vecArea.push_back(pControl);
 					}else
 					{
 						m_vecControl.push_back(pControl);
-						// ¶Ô»°¿ò³õÊ¼»¯Ê±ºòÏÔÊ¾Ò»ÏÂËùÓĞ¿Ø¼ş£¬¿ÉÒÔÊ¹editµÈWindowsÔ­Éú¿Ø¼ş¿ÉÒÔ×Ô¶¯´´½¨³öÀ´
+						// å¯¹è¯æ¡†åˆå§‹åŒ–æ—¶å€™æ˜¾ç¤ºä¸€ä¸‹æ‰€æœ‰æ§ä»¶ï¼Œå¯ä»¥ä½¿editç­‰WindowsåŸç”Ÿæ§ä»¶å¯ä»¥è‡ªåŠ¨åˆ›å»ºå‡ºæ¥
 						//BOOL bIsVisible = pControl->GetVisible();
 						//pControl->SetControlWndVisible(bIsVisible);
 					}
@@ -469,7 +469,7 @@ void CDlgBase::InitUI(CRect rcClient, DuiXmlNode pNode)
 	}
 }
 
-// Ìí¼Ó¿Ø¼şÔ¤ÉèÖÃĞÅÏ¢
+// æ·»åŠ æ§ä»¶é¢„è®¾ç½®ä¿¡æ¯
 void CDlgBase::SetControlValue(CString strName, CString strType, CString strValue)
 {
 	CONTROL_VALUE ctrlValue;
@@ -479,27 +479,27 @@ void CDlgBase::SetControlValue(CString strName, CString strType, CString strValu
 	m_vecControlValue.push_back(ctrlValue);
 }
 
-// ³õÊ¼»¯Ô¤ÉèÖÃ¶Ô»°¿òÊôĞÔ
+// åˆå§‹åŒ–é¢„è®¾ç½®å¯¹è¯æ¡†å±æ€§
 void CDlgBase::InitDialogValue()
 {
 	for (size_t i = 0; i < m_vecControlValue.size(); i++)
 	{
 		CONTROL_VALUE* pCtrlValue = &(m_vecControlValue.at(i));
 
-		// ¶Ô»°¿ò×ÔÉíÊôĞÔ¸ü¸Ä
+		// å¯¹è¯æ¡†è‡ªèº«å±æ€§æ›´æ”¹
 		if(pCtrlValue->strName.IsEmpty())
 		{
 			if(pCtrlValue->strType == _T("width"))
 			{
 				m_MinSize.cx = _ttoi(pCtrlValue->strValue);
-				// ¸üĞÂ´°¿Ú´óĞ¡
+				// æ›´æ–°çª—å£å¤§å°
 				SetMinSize(m_MinSize.cx, m_MinSize.cy);
 				SetRect(CRect(0, 0, m_MinSize.cx, m_MinSize.cy));
 			}else
 			if(pCtrlValue->strType == _T("height"))
 			{
 				m_MinSize.cy = _ttoi(pCtrlValue->strValue);
-				// ¸üĞÂ´°¿Ú´óĞ¡
+				// æ›´æ–°çª—å£å¤§å°
 				SetMinSize(m_MinSize.cx, m_MinSize.cy);
 				SetRect(CRect(0, 0, m_MinSize.cx, m_MinSize.cy));
 			}else
@@ -510,14 +510,14 @@ void CDlgBase::InitDialogValue()
 	}
 }
 
-// ³õÊ¼»¯Ô¤ÉèÖÃ¿Ø¼şÖµ
+// åˆå§‹åŒ–é¢„è®¾ç½®æ§ä»¶å€¼
 void CDlgBase::InitControlValue()
 {
 	for (size_t i = 0; i < m_vecControlValue.size(); i++)
 	{
 		CONTROL_VALUE* pCtrlValue = &(m_vecControlValue.at(i));
 
-		// ¶Ô»°¿ò×ÔÉíÊôĞÔ¸ü¸Ä
+		// å¯¹è¯æ¡†è‡ªèº«å±æ€§æ›´æ”¹
 		if(pCtrlValue->strName.IsEmpty())
 		{
 			continue;
@@ -526,12 +526,12 @@ void CDlgBase::InitControlValue()
 		CControlBase* pControl = GetControl(pCtrlValue->strName);
 		if(pControl == NULL)
 		{
-			// Èç¹ûÔÚÆÕÍ¨¿Ø¼şÖĞÎ´ÕÒµ½,ÔòÕÒÒ»ÏÂ»ù´¡¿Ø¼ş
+			// å¦‚æœåœ¨æ™®é€šæ§ä»¶ä¸­æœªæ‰¾åˆ°,åˆ™æ‰¾ä¸€ä¸‹åŸºç¡€æ§ä»¶
 			pControl = GetBaseControl(pCtrlValue->strName);
 		}
 		if(pControl != NULL)
 		{
-			// ĞèÒªÍ¨¹ı¿Ø¼şº¯ÊıË¢ĞÂµÄÒ»Ğ©ÊôĞÔÖµĞèÒªÌØÊâ´¦Àí,ÆäËûµÄÖ±½Óµ÷ÓÃ¿Ø¼şµÄÉèÖÃÊôĞÔÖµº¯Êı
+			// éœ€è¦é€šè¿‡æ§ä»¶å‡½æ•°åˆ·æ–°çš„ä¸€äº›å±æ€§å€¼éœ€è¦ç‰¹æ®Šå¤„ç†,å…¶ä»–çš„ç›´æ¥è°ƒç”¨æ§ä»¶çš„è®¾ç½®å±æ€§å€¼å‡½æ•°
 			if(pCtrlValue->strType == _T("show"))
 			{
 				pControl->SetVisible(_ttoi(pCtrlValue->strValue));
@@ -557,10 +557,10 @@ void CDlgBase::InitControlValue()
 	}
 }
 
-// ÉèÖÃ´°¿Ú×Ô¶¯¹Ø±ÕµÄ¶¨Ê±Æ÷
+// è®¾ç½®çª—å£è‡ªåŠ¨å…³é—­çš„å®šæ—¶å™¨
 void CDlgBase::SetAutoCloseTimer(UINT uDelayTime, BOOL bHideWnd)
 {
-	// ÏÈÉ¾³ı¶¨Ê±Æ÷,ÔÙ´´½¨ĞÂµÄ¶¨Ê±Æ÷
+	// å…ˆåˆ é™¤å®šæ—¶å™¨,å†åˆ›å»ºæ–°çš„å®šæ—¶å™¨
 	if(m_uTimerAutoClose != 0)
 	{
 		CTimer::KillTimer(m_uTimerAutoClose);
@@ -571,17 +571,17 @@ void CDlgBase::SetAutoCloseTimer(UINT uDelayTime, BOOL bHideWnd)
 	m_bAutoHide = FALSE;
 	if(uDelayTime != 0)
 	{
-		// Èç¹ûÑÓ³ÙÊ±¼äÉèÖÃµÄÊÇ·Ç0,²ÅÆô¶¯×Ô¶¯¹Ø±Õ
+		// å¦‚æœå»¶è¿Ÿæ—¶é—´è®¾ç½®çš„æ˜¯é0,æ‰å¯åŠ¨è‡ªåŠ¨å…³é—­
 		if(bHideWnd)
 		{
-			m_bAutoHide = TRUE;	// Òş²Ø´°¿ÚÄ£Ê½
+			m_bAutoHide = TRUE;	// éšè—çª—å£æ¨¡å¼
 		}else
 		{
-			m_bAutoClose = TRUE;	// ¹Ø±Õ´°¿ÚÄ£Ê½
+			m_bAutoClose = TRUE;	// å…³é—­çª—å£æ¨¡å¼
 		}
 		if(!m_bTracking)
 		{
-			// Èç¹ûÊó±ê²»ÔÚ´°¿Ú·¶Î§ÄÚ²Å´´½¨¶¨Ê±Æ÷
+			// å¦‚æœé¼ æ ‡ä¸åœ¨çª—å£èŒƒå›´å†…æ‰åˆ›å»ºå®šæ—¶å™¨
 			m_uTimerAutoClose = CTimer::SetTimer(uDelayTime);
 		}
 	}
@@ -591,7 +591,7 @@ void CDlgBase::OnSize(CRect rcClient)
 {
 }
 
-// »ñÈ¡×Ó¿Ø¼ş¶ÔÏó
+// è·å–å­æ§ä»¶å¯¹è±¡
 CControlBase *CDlgBase::GetControl(UINT uControlID)
 {
 	for (size_t i = 0; i < m_vecControl.size(); i++)
@@ -604,7 +604,7 @@ CControlBase *CDlgBase::GetControl(UINT uControlID)
 				return pControlBase;
 			}else
 			{
-				// ²éÕÒ×Ó¿Ø¼ş
+				// æŸ¥æ‰¾å­æ§ä»¶
 				CControlBase * pSubControl = pControlBase->GetControl(uControlID);
 				if(pSubControl != NULL)
 				{
@@ -624,7 +624,7 @@ CControlBase *CDlgBase::GetControl(UINT uControlID)
 				return pControlBase;
 			}else
 			{
-				// ²éÕÒ×Ó¿Ø¼ş
+				// æŸ¥æ‰¾å­æ§ä»¶
 				CControlBase * pSubControl = pControlBase->GetControl(uControlID);
 				if(pSubControl != NULL)
 				{
@@ -637,7 +637,7 @@ CControlBase *CDlgBase::GetControl(UINT uControlID)
 	return NULL;
 }
 
-// »ñÈ¡×Ó¿Ø¼ş¶ÔÏó
+// è·å–å­æ§ä»¶å¯¹è±¡
 CControlBase *CDlgBase::GetControl(CString strControlName)
 {
 	for (size_t i = 0; i < m_vecControl.size(); i++)
@@ -650,7 +650,7 @@ CControlBase *CDlgBase::GetControl(CString strControlName)
 				return pControlBase;
 			}else
 			{
-				// ²éÕÒ×Ó¿Ø¼ş
+				// æŸ¥æ‰¾å­æ§ä»¶
 				CControlBase * pSubControl = pControlBase->GetControl(strControlName);
 				if(pSubControl != NULL)
 				{
@@ -670,7 +670,7 @@ CControlBase *CDlgBase::GetControl(CString strControlName)
 				return pControlBase;
 			}else
 			{
-				// ²éÕÒ×Ó¿Ø¼ş
+				// æŸ¥æ‰¾å­æ§ä»¶
 				CControlBase * pSubControl = pControlBase->GetControl(strControlName);
 				if(pSubControl != NULL)
 				{
@@ -683,7 +683,7 @@ CControlBase *CDlgBase::GetControl(CString strControlName)
 	return NULL;
 }
 
-// »ñÈ¡×Ó¿Ø¼ş¶ÔÏó
+// è·å–å­æ§ä»¶å¯¹è±¡
 CControlBase *CDlgBase::GetBaseControl(UINT uControlID)
 {
 	for (size_t i = 0; i < m_vecBaseControl.size(); i++)
@@ -713,7 +713,7 @@ CControlBase *CDlgBase::GetBaseControl(UINT uControlID)
 	return NULL;
 }
 
-// »ñÈ¡×Ó¿Ø¼ş¶ÔÏó
+// è·å–å­æ§ä»¶å¯¹è±¡
 CControlBase *CDlgBase::GetBaseControl(CString strControlName)
 {
 	for (size_t i = 0; i < m_vecBaseControl.size(); i++)
@@ -743,7 +743,7 @@ CControlBase *CDlgBase::GetBaseControl(CString strControlName)
 	return NULL;
 }
 
-// ÉèÖÃµ±Ç°½¹µã¿Ø¼ş
+// è®¾ç½®å½“å‰ç„¦ç‚¹æ§ä»¶
 void CDlgBase::SetFocusControl(CControlBase* pFocusControl)
 {
 	if(pFocusControl != m_pFocusControl)
@@ -760,7 +760,7 @@ void CDlgBase::SetFocusControl(CControlBase* pFocusControl)
 	}
 }
 
-// »ñÈ¡µ±Ç°½¹µã¿Ø¼ş
+// è·å–å½“å‰ç„¦ç‚¹æ§ä»¶
 CControlBase* CDlgBase::GetFocusControl()
 {
 	/*for (int i = m_vecControl.size()-1; i >= 0; i--)
@@ -772,7 +772,7 @@ CControlBase* CDlgBase::GetFocusControl()
 		}else
 		if (pControlBase && (pControlBase == m_pControl))
 		{
-			// ²éÕÒ×Ó¿Ø¼ş
+			// æŸ¥æ‰¾å­æ§ä»¶
 			pControlBase = pControlBase->GetFocusControl(m_pFocusControl);
 			if(pControlBase != NULL)
 			{
@@ -785,11 +785,11 @@ CControlBase* CDlgBase::GetFocusControl()
 	return m_pFocusControl;
 }
 
-// »ñÈ¡ÉÏÒ»¸ö¿ÉÒÔ»ñÈ¡½¹µãµÄ×Ó¿Ø¼ş
+// è·å–ä¸Šä¸€ä¸ªå¯ä»¥è·å–ç„¦ç‚¹çš„å­æ§ä»¶
 CControlBase* CDlgBase::GetPrevFocusableControl()
 {
 	BOOL bStartSearch = FALSE;
-	// ÏÈ°´ÕÕ½¹µã¿Ø¼ş²éÕÒÒ»´Î
+	// å…ˆæŒ‰ç…§ç„¦ç‚¹æ§ä»¶æŸ¥æ‰¾ä¸€æ¬¡
 	for (int i = m_vecControl.size()-1; i >= 0; i--)
 	{
 		CControlBase* pControlBase = m_vecControl.at(i);
@@ -803,7 +803,7 @@ CControlBase* CDlgBase::GetPrevFocusableControl()
 		}
 	}
 
-	// ÔÙ±éÀú×Ó¿Ø¼ş²éÕÒ
+	// å†éå†å­æ§ä»¶æŸ¥æ‰¾
 	if(m_pFocusControl == NULL)
 	{
 		bStartSearch = TRUE;
@@ -821,7 +821,7 @@ CControlBase* CDlgBase::GetPrevFocusableControl()
 		}else
 		if (pControlBase && (pControlBase == m_pControl))
 		{
-			// ²éÕÒ×Ó¿Ø¼ş
+			// æŸ¥æ‰¾å­æ§ä»¶
 			pControlBase = pControlBase->GetPrevFocusableControl(m_pFocusControl);
 			if(pControlBase != NULL)
 			{
@@ -834,11 +834,11 @@ CControlBase* CDlgBase::GetPrevFocusableControl()
 	return NULL;
 }
 
-// »ñÈ¡ÏÂÒ»¸ö¿ÉÒÔ»ñÈ¡½¹µãµÄ×Ó¿Ø¼ş
+// è·å–ä¸‹ä¸€ä¸ªå¯ä»¥è·å–ç„¦ç‚¹çš„å­æ§ä»¶
 CControlBase* CDlgBase::GetNextFocusableControl()
 {
 	BOOL bStartSearch = FALSE;
-	// ÏÈ°´ÕÕ½¹µã¿Ø¼ş²éÕÒÒ»´Î
+	// å…ˆæŒ‰ç…§ç„¦ç‚¹æ§ä»¶æŸ¥æ‰¾ä¸€æ¬¡
 	for (int i = 0; i < (int)m_vecControl.size(); i++)
 	{
 		CControlBase* pControlBase = m_vecControl.at(i);
@@ -852,7 +852,7 @@ CControlBase* CDlgBase::GetNextFocusableControl()
 		}
 	}
 
-	// ÔÙ±éÀú×Ó¿Ø¼ş²éÕÒ
+	// å†éå†å­æ§ä»¶æŸ¥æ‰¾
 	if(m_pFocusControl == NULL)
 	{
 		bStartSearch = TRUE;
@@ -870,7 +870,7 @@ CControlBase* CDlgBase::GetNextFocusableControl()
 		}else
 		if (pControlBase && (pControlBase == m_pControl))
 		{
-			// ²éÕÒ×Ó¿Ø¼ş
+			// æŸ¥æ‰¾å­æ§ä»¶
 			pControlBase = pControlBase->GetNextFocusableControl(m_pFocusControl);
 			if(pControlBase != NULL)
 			{
@@ -885,13 +885,13 @@ CControlBase* CDlgBase::GetNextFocusableControl()
 
 int CDlgBase::OnCreate(LPCREATESTRUCT lpCreateStruct)
 {
-	// ÉèÖÃ´°¿Ú·ç¸ñ
+	// è®¾ç½®çª—å£é£æ ¼
 	DWORD dwStyle = ::GetWindowLong(m_hWnd, GWL_STYLE)
 		| WS_MAXIMIZEBOX | WS_MINIMIZEBOX
 		| WS_SYSMENU | WS_SIZEBOX | WS_CLIPSIBLINGS | WS_CLIPCHILDREN | CS_DBLCLKS;
 	dwStyle &= ~(WS_CAPTION);
 
-	// ¸Ä±ä´°¿Ú´óĞ¡
+	// æ”¹å˜çª—å£å¤§å°
 	if(!m_bChangeSize)
 	{
 		dwStyle &= ~(WS_THICKFRAME);
@@ -902,21 +902,21 @@ int CDlgBase::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	return CDialog::OnCreate(lpCreateStruct);
 }
 
-// ´ÓXMLÉèÖÃresizeÊôĞÔ
+// ä»XMLè®¾ç½®resizeå±æ€§
 HRESULT CDlgBase::OnAttributeResize(const CString& strValue, BOOL bLoading)
 {
     if (strValue.IsEmpty()) return E_FAIL;
 
-	// »ñÈ¡resizeÊôĞÔ£¬²¢ÖØĞÂÉèÖÃÒ»ÏÂ´°¿Ú·ç¸ñ
+	// è·å–resizeå±æ€§ï¼Œå¹¶é‡æ–°è®¾ç½®ä¸€ä¸‹çª—å£é£æ ¼
 	m_bChangeSize = _ttoi(strValue);
 
-	// ÉèÖÃ´°¿Ú·ç¸ñ
+	// è®¾ç½®çª—å£é£æ ¼
 	DWORD dwStyle = ::GetWindowLong(m_hWnd, GWL_STYLE)
 		| WS_MAXIMIZEBOX | WS_MINIMIZEBOX
 		| WS_SYSMENU | WS_SIZEBOX | WS_CLIPSIBLINGS | WS_CLIPCHILDREN | CS_DBLCLKS;
 	dwStyle &= ~(WS_CAPTION);
 
-	// ¸Ä±ä´°¿Ú´óĞ¡
+	// æ”¹å˜çª—å£å¤§å°
 	if(!m_bChangeSize)
 	{
 		dwStyle &= ~(WS_THICKFRAME);
@@ -927,7 +927,7 @@ HRESULT CDlgBase::OnAttributeResize(const CString& strValue, BOOL bLoading)
 	return bLoading?S_FALSE:S_OK;
 }
 
-// ³õÊ¼»¯´°¿Ú±³¾°Æ¤·ô(¼ÓÔØµ½±³¾°ÄÚ´ædc)
+// åˆå§‹åŒ–çª—å£èƒŒæ™¯çš®è‚¤(åŠ è½½åˆ°èƒŒæ™¯å†…å­˜dc)
 void CDlgBase::InitWindowBkSkin()
 {
 	int nType = 0;
@@ -936,9 +936,9 @@ void CDlgBase::InitWindowBkSkin()
 	CString strImgFile = _T("");
 
 	BOOL bRet = TRUE;
-	if(!m_strBkImg.IsEmpty())	// Èç¹û´°¿ÚÉèÖÃÁË±³¾°Í¼Æ¬ÊôĞÔ£¬¾ÍÓÃ´Ë±³¾°Í¼Æ¬
+	if(!m_strBkImg.IsEmpty())	// å¦‚æœçª—å£è®¾ç½®äº†èƒŒæ™¯å›¾ç‰‡å±æ€§ï¼Œå°±ç”¨æ­¤èƒŒæ™¯å›¾ç‰‡
 	{
-		// Í¨¹ıSkin¶ÁÈ¡
+		// é€šè¿‡Skinè¯»å–
 		if(m_strBkImg.Find(_T("skin:")) == 0)
 		{
 			strImgFile = DuiSystem::Instance()->GetSkin(m_strBkImg);
@@ -947,49 +947,49 @@ void CDlgBase::InitWindowBkSkin()
 			strImgFile = m_strBkImg;
 		}
 
-		if(strImgFile.Find(_T(".")) != -1)	// ¼ÓÔØÍ¼Æ¬ÎÄ¼ş
+		if(strImgFile.Find(_T(".")) != -1)	// åŠ è½½å›¾ç‰‡æ–‡ä»¶
 		{
 			nType = BKTYPE_IMAGE_FILE;
-		}else	// ¼ÓÔØÍ¼Æ¬×ÊÔ´
+		}else	// åŠ è½½å›¾ç‰‡èµ„æº
 		{
 			nIDResource = _ttoi(strImgFile);
 			nType = BKTYPE_IMAGE_RESOURCE;
 		}
 	}else
-	if(m_crlBack != RGB(0,0,0))	// Èç¹û´°¿ÚÉèÖÃÁË±³¾°ÑÕÉ«ÊôĞÔ£¬¾ÍÓÃ´Ë±³¾°ÑÕÉ«
+	if(m_crlBack != RGB(0,0,0))	// å¦‚æœçª—å£è®¾ç½®äº†èƒŒæ™¯é¢œè‰²å±æ€§ï¼Œå°±ç”¨æ­¤èƒŒæ™¯é¢œè‰²
 	{
 		nType = BKTYPE_COLOR;
 		clr = m_crlBack;
 	}else
 	{
-		// µ÷ÓÃDuiSystem´ÓÓ¦ÓÃ³ÌĞò»ñÈ¡±³¾°ĞÅÏ¢
+		// è°ƒç”¨DuiSystemä»åº”ç”¨ç¨‹åºè·å–èƒŒæ™¯ä¿¡æ¯
 		bRet = DuiSystem::Instance()->GetWindowBkInfo(nType, nIDResource, clr, strImgFile);
 	}
 
-	// ÉèÖÃ´°¿Ú±³¾°Æ¤·ô
+	// è®¾ç½®çª—å£èƒŒæ™¯çš®è‚¤
 	if(bRet && !((nType == BKTYPE_IMAGE_RESOURCE) && (nIDResource == 0)))
 	{
-		if(nType == BKTYPE_IMAGE_RESOURCE)	// Í¼Æ¬×ÊÔ´
+		if(nType == BKTYPE_IMAGE_RESOURCE)	// å›¾ç‰‡èµ„æº
 		{
 			LoadBackgroundImage(nIDResource);
 		}else
-		if(nType == BKTYPE_COLOR)	// ÑÕÉ«
+		if(nType == BKTYPE_COLOR)	// é¢œè‰²
 		{
 			DrawBackground(clr);
 		}else
-		if(nType == BKTYPE_IMAGE_FILE)	// Í¼Æ¬ÎÄ¼ş
+		if(nType == BKTYPE_IMAGE_FILE)	// å›¾ç‰‡æ–‡ä»¶
 		{
 			LoadBackgroundImage(strImgFile);
 		}
 	}else
 	{
-		// Ä¬ÈÏ¼ÓÔØµÚÒ»ÕÅ±³¾°Í¼Æ¬
+		// é»˜è®¤åŠ è½½ç¬¬ä¸€å¼ èƒŒæ™¯å›¾ç‰‡
 		strImgFile = DuiSystem::Instance()->GetSkin(_T("SKIN_PIC_0"));
 		LoadBackgroundImage(strImgFile);
 	}
 }
 
-// ÍÏ×§Í¼Æ¬¸üĞÂ´°¿Ú±³¾°Í¼Æ¬
+// æ‹–æ‹½å›¾ç‰‡æ›´æ–°çª—å£èƒŒæ™¯å›¾ç‰‡
 void CDlgBase::OnDropFiles(HDROP hDropInfo)
 {
 	CPoint ptDrop;
@@ -1007,10 +1007,10 @@ void CDlgBase::OnDropFiles(HDROP hDropInfo)
 		CString strFileName = szFileName;
 
 		CString strEnableDragFile = DuiSystem::Instance()->GetConfig(_T("enableDragFile"));
-		//strEnableDragFile²»¿ÉÄÜ=0
-		if(strEnableDragFile != _T("2"))	//Ö»ÔÊĞí±³¾°
+		//strEnableDragFileä¸å¯èƒ½=0
+		if(strEnableDragFile != _T("2"))	//åªå…è®¸èƒŒæ™¯
 		{
-			// Èç¹ûµ±Ç°¿Ø¼ş¿ÉÒÔ´¦ÀíÍÏ×§ÎÄ¼şµÄÊÂ¼ş,Ôò²»ĞèÒªÆäËûµÄ´¦Àí
+			// å¦‚æœå½“å‰æ§ä»¶å¯ä»¥å¤„ç†æ‹–æ‹½æ–‡ä»¶çš„äº‹ä»¶,åˆ™ä¸éœ€è¦å…¶ä»–çš„å¤„ç†
 			if(bQueryPoint && m_pControl->OnControlDropFile(ptDrop, strFileName))
 			{
 				continue;
@@ -1019,14 +1019,14 @@ void CDlgBase::OnDropFiles(HDROP hDropInfo)
 
 		if(strEnableDragFile != _T("1"))
 		{
-			// µ±Ç°¿Ø¼şÎ´´¦Àí´ËÊÂ¼ş,Ôò»ñÈ¡ÎÄ¼şºó×º,Èç¹ûÎÄ¼şºó×ºÊÇÍ¼Æ¬Ôò¸ü¸Ä±³¾°
+			// å½“å‰æ§ä»¶æœªå¤„ç†æ­¤äº‹ä»¶,åˆ™è·å–æ–‡ä»¶åç¼€,å¦‚æœæ–‡ä»¶åç¼€æ˜¯å›¾ç‰‡åˆ™æ›´æ”¹èƒŒæ™¯
 			strFileName = strFileName.Right(3);
 			if (0 == strFileName.CompareNoCase(TEXT("bmp")) || 0 == strFileName.CompareNoCase(TEXT("jpg")) || 0 == strFileName.CompareNoCase(TEXT("png")))
 			{
 				LoadBackgroundImage(szFileName);
-				// ±£´æ±³¾°ĞÅÏ¢
+				// ä¿å­˜èƒŒæ™¯ä¿¡æ¯
 				DuiSystem::Instance()->SetWindowBkInfo(BKTYPE_IMAGE_FILE, 0, RGB(0,0,0), szFileName);
-				// Ë¢ĞÂËùÓĞ´°¿ÚµÄ±³¾°Æ¤·ô
+				// åˆ·æ–°æ‰€æœ‰çª—å£çš„èƒŒæ™¯çš®è‚¤
 				DuiSystem::Instance()->ResetAllWindowsBkSkin();
 				break;
 			}
@@ -1035,7 +1035,7 @@ void CDlgBase::OnDropFiles(HDROP hDropInfo)
 	// CDialog::OnDropFiles(hDropInfo);
 }
 
-// ¼ÓÔØ´°¿Ú±³¾°Í¼Æ¬(´Ó×ÊÔ´¼ÓÔØ)
+// åŠ è½½çª—å£èƒŒæ™¯å›¾ç‰‡(ä»èµ„æºåŠ è½½)
 void CDlgBase::LoadBackgroundImage(UINT nIDResource, CString strType)
 {
 	CBitmap bitBackground;
@@ -1043,7 +1043,7 @@ void CDlgBase::LoadBackgroundImage(UINT nIDResource, CString strType)
 	DrawBackground(bitBackground);
 }
 
-// ¼ÓÔØ´°¿Ú±³¾°Í¼Æ¬(´ÓÎÄ¼ş»òzip×ÊÔ´¼ÓÔØ)
+// åŠ è½½çª—å£èƒŒæ™¯å›¾ç‰‡(ä»æ–‡ä»¶æˆ–zipèµ„æºåŠ è½½)
 void CDlgBase::LoadBackgroundImage(CString strFileName)
 {
 	CBitmap bitBackground;
@@ -1061,7 +1061,7 @@ void CDlgBase::LoadBackgroundImage(CString strFileName)
 	}
 }
 
-// »­±³¾°Í¼Æ¬
+// ç”»èƒŒæ™¯å›¾ç‰‡
 void CDlgBase::DrawBackground(CBitmap &bitBackground)
 {
 	if(m_MinSize.cx - 2 > m_sizeBKImage.cx || m_MinSize.cy - 2 > m_sizeBKImage.cy || m_bChangeSize)
@@ -1118,45 +1118,45 @@ void CDlgBase::DrawBackground(CBitmap &bitBackground)
 
 		CBitmap* pOldBitmap = TempDC.SelectObject(&bitBackground);
 
-		// »­³öÆ½¾ùÍ¼Æ¬
+		// ç”»å‡ºå¹³å‡å›¾ç‰‡
 		m_MemBKDC.FillSolidRect(0, 0, nWidth, nHeight, m_clrBK);
-		// ÉèÖÃÎÄ×ÖµÄ±³¾°Í¸Ã÷
+		// è®¾ç½®æ–‡å­—çš„èƒŒæ™¯é€æ˜
 		//m_MemBKDC.SetBkMode(TRANSPARENT);
 
 		if(m_nOverRegioX > 0 && m_nOverRegioY > 0)
 		{
 			int nOverRegio = __min(m_nOverRegioX, m_nOverRegioY);
 
-			// ×óÉÏ
+			// å·¦ä¸Š
 			m_MemBKDC.BitBlt(0, 0, nWidth - nOverRegio, nHeight - nOverRegio, &TempDC, 0, 0, SRCCOPY ); 
 
-			// ÖĞ¼ä
+			// ä¸­é—´
 			CRect rc(0, 0, nWidth, nHeight);
 			DrawRightBottomTransition(m_MemBKDC, TempDC, rc, nOverRegio, m_clrBK);
 
-			// ÓÒÉÏ
+			// å³ä¸Š
 			rc.SetRect(nWidth - nOverRegio, 0, nWidth, nHeight - nOverRegio);
 			DrawHorizontalTransition(m_MemBKDC, TempDC, rc, rc, 0, 100);
 
-			// ×óÏÂ
+			// å·¦ä¸‹
 			rc.SetRect(0, nHeight - nOverRegio, nWidth - nOverRegio, nHeight);
 			DrawVerticalTransition(m_MemBKDC, TempDC, rc, rc, 0, 100);
 		}
 		else if(m_nOverRegioX > 0 && m_nOverRegioY == 0)
 		{
-			// ×ó±ß
+			// å·¦è¾¹
 			m_MemBKDC.BitBlt(0, 0, nWidth - m_nOverRegioX, nHeight, &TempDC, 0, 0, SRCCOPY ); 
 
-			// ÓÒ±ß
+			// å³è¾¹
 			CRect rc(nWidth - m_nOverRegioX, 0, nWidth, nHeight);
 			DrawHorizontalTransition(m_MemBKDC, TempDC, rc, rc, 0, 100);
 		}
 		else if(m_nOverRegioX == 0 && m_nOverRegioY > 0)
 		{
-			// ±ßÉÏ
+			// è¾¹ä¸Š
 			m_MemBKDC.BitBlt(0, 0, nWidth, nHeight - m_nOverRegioY, &TempDC, 0, 0, SRCCOPY ); 
 
-			// ÏÂ±ß
+			// ä¸‹è¾¹
 			CRect rc(0, nHeight - m_nOverRegioY, nWidth, nHeight);
 			DrawVerticalTransition(m_MemBKDC, TempDC, rc, rc, 0, 100);
 		}
@@ -1173,7 +1173,7 @@ void CDlgBase::DrawBackground(CBitmap &bitBackground)
 	}
 }
 
-// »­±³¾°ÑÕÉ«
+// ç”»èƒŒæ™¯é¢œè‰²
 void CDlgBase::DrawBackground(COLORREF clr)
 {
 	m_clrBK = clr;
@@ -1195,13 +1195,13 @@ void CDlgBase::OnPaint()
 {
 	if (IsIconic())
 	{
-		// ×îĞ¡»¯×´Ì¬²»ÓÃ»æÖÆÍ¼±ê,µ«±ØĞë´´½¨CPaintDC,·ñÔò»áÒòÎªWM_PAINTÏûÏ¢µÃ²»µ½ÕıÈ·´¦Àíµ¼ÖÂ²»¶Ï³ö·¢,Ôì³ÉCPUÕ¼ÓÃÂÊ¸ß
-		// CPaintDCµÄ¹¹ÔìºÍÎö¹¹º¯Êı»áµ÷ÓÃCWnd::BeginPaintºÍCWnd::EndPaint,Íê³ÉWM_PAINTµÄ´¦Àí
-		CPaintDC dc(this); // ÓÃÓÚ»æÖÆµÄÉè±¸ÉÏÏÂÎÄ
+		// æœ€å°åŒ–çŠ¶æ€ä¸ç”¨ç»˜åˆ¶å›¾æ ‡,ä½†å¿…é¡»åˆ›å»ºCPaintDC,å¦åˆ™ä¼šå› ä¸ºWM_PAINTæ¶ˆæ¯å¾—ä¸åˆ°æ­£ç¡®å¤„ç†å¯¼è‡´ä¸æ–­å‡ºå‘,é€ æˆCPUå ç”¨ç‡é«˜
+		// CPaintDCçš„æ„é€ å’Œææ„å‡½æ•°ä¼šè°ƒç”¨CWnd::BeginPaintå’ŒCWnd::EndPaint,å®ŒæˆWM_PAINTçš„å¤„ç†
+		CPaintDC dc(this); // ç”¨äºç»˜åˆ¶çš„è®¾å¤‡ä¸Šä¸‹æ–‡
 
  		/*SendMessage(WM_ICONERASEBKGND, reinterpret_cast<WPARAM>(dc.GetSafeHdc()), 0);
 
-		// Ê¹Í¼±êÔÚ¹¤×÷Çø¾ØĞÎÖĞ¾ÓÖĞ
+		// ä½¿å›¾æ ‡åœ¨å·¥ä½œåŒºçŸ©å½¢ä¸­å±…ä¸­
 		int cxIcon = GetSystemMetrics(SM_CXICON);
 		int cyIcon = GetSystemMetrics(SM_CYICON);
 		CRect rect;
@@ -1209,7 +1209,7 @@ void CDlgBase::OnPaint()
 		int x = (rect.Width() - cxIcon + 1) / 2;
 		int y = (rect.Height() - cyIcon + 1) / 2;
 
-		// »æÖÆÍ¼±ê
+		// ç»˜åˆ¶å›¾æ ‡
 		dc.DrawIcon(x, y, m_hIcon);*/
 	}
 	else
@@ -1221,17 +1221,17 @@ void CDlgBase::OnPaint()
  		GetClientRect(&rcClient);
 
 		CPaintDC dc(this);
-		// ´´½¨ÄÚ´ædc
+		// åˆ›å»ºå†…å­˜dc
 		CDC MemDC;
 		MemDC.CreateCompatibleDC(&dc);
 		CBitmap memBmp;
 		memBmp.CreateCompatibleBitmap(&dc, rcClient.Width(), rcClient.Height());
 		CBitmap *pOldmap =  MemDC.SelectObject(&memBmp);
 
-		// »­±³¾°ºÍ¿Ø¼şµ½ÄÚ´ædc
+		// ç”»èƒŒæ™¯å’Œæ§ä»¶åˆ°å†…å­˜dc
 		DrawBackgroundAndControls(MemDC, rcClient, rcUpdate);
 
-		// ÄÚ´ædcÊä³öµ½´°¿Údc
+		// å†…å­˜dcè¾“å‡ºåˆ°çª—å£dc
 		dc.BitBlt(rcUpdate.left, rcUpdate.top, rcUpdate.Width(), rcUpdate.Height(), &MemDC, rcUpdate.left, rcUpdate.top, SRCCOPY);
 
 		MemDC.SelectObject(pOldmap);
@@ -1240,13 +1240,13 @@ void CDlgBase::OnPaint()
 	}
 }
 
-// »­´°¿Ú±³¾°ºÍ¿Ø¼ş
+// ç”»çª—å£èƒŒæ™¯å’Œæ§ä»¶
 void CDlgBase::DrawBackgroundAndControls(CDC &dc, const CRect &rcClient, const CRect &rcUpdate)
 {
-	// Ã»ÓĞÖ¸¶¨±³¾°,ÔòÌî³ä±³¾°ÑÕÉ«Îª±³¾°Í¼Æ¬µÄÆ½¾ùÉ«,µ±±³¾°Í¼Æ¬²»¹»´óÊ±Æğµ½½¥±äÉ«µÄĞ§¹û
+	// æ²¡æœ‰æŒ‡å®šèƒŒæ™¯,åˆ™å¡«å……èƒŒæ™¯é¢œè‰²ä¸ºèƒŒæ™¯å›¾ç‰‡çš„å¹³å‡è‰²,å½“èƒŒæ™¯å›¾ç‰‡ä¸å¤Ÿå¤§æ—¶èµ·åˆ°æ¸å˜è‰²çš„æ•ˆæœ
 	dc.FillSolidRect(rcUpdate.left, rcUpdate.top, rcUpdate.Width(), rcUpdate.Height(), m_clrBK);
 
-	// Èç¹ûÖ¸¶¨ÁË±³¾°,ÒÑ¾­Éú³ÉÁË±³¾°µÄÄÚ´ædc,Ôò»­±³¾°,´Ó±³¾°ÄÚ´ædcÊä³öµ½µ±Ç°dc(±³¾°dcµÄ´óĞ¡¿ÉÄÜĞ¡ÓÚµ±Ç°dc)
+	// å¦‚æœæŒ‡å®šäº†èƒŒæ™¯,å·²ç»ç”Ÿæˆäº†èƒŒæ™¯çš„å†…å­˜dc,åˆ™ç”»èƒŒæ™¯,ä»èƒŒæ™¯å†…å­˜dcè¾“å‡ºåˆ°å½“å‰dc(èƒŒæ™¯dcçš„å¤§å°å¯èƒ½å°äºå½“å‰dc)
 	if(m_bDrawImage)
 	{
 		CRect rcBk(1, 1, 1 + m_sizeBKImage.cx, 1 + m_sizeBKImage.cy);
@@ -1257,11 +1257,11 @@ void CDlgBase::DrawBackgroundAndControls(CDC &dc, const CRect &rcClient, const C
 		}	
 	}
 
-	// »­¿Ø¼ş
+	// ç”»æ§ä»¶
 	DrawControl(dc, rcUpdate);
 }
 
-// ÖØÖÃ¿Ø¼ş
+// é‡ç½®æ§ä»¶
 void CDlgBase::ResetControl()
 {
 	for (size_t i = 0; i < m_vecArea.size(); i++)
@@ -1303,7 +1303,7 @@ void CDlgBase::ResetControl()
 	InvalidateRect(NULL);
 }
 
-// ÒÆ¶¯¿Ø¼ş
+// ç§»åŠ¨æ§ä»¶
 CControlBase* CDlgBase::SetControlRect(UINT uControlID, CRect rc)
 {
 	CControlBase *pControlBase = GetControl(uControlID);
@@ -1315,7 +1315,7 @@ CControlBase* CDlgBase::SetControlRect(UINT uControlID, CRect rc)
 	return pControlBase;
 }
 
-// ÒÆ¶¯¿Ø¼ş
+// ç§»åŠ¨æ§ä»¶
 CControlBase* CDlgBase::SetControlRect(CControlBase *pControlBase, CRect rc)
 {
 	if(pControlBase)
@@ -1326,7 +1326,7 @@ CControlBase* CDlgBase::SetControlRect(CControlBase *pControlBase, CRect rc)
 	return pControlBase;
 }
 
-// ÏÔÊ¾¿Ø¼ş
+// æ˜¾ç¤ºæ§ä»¶
 CControlBase* CDlgBase::SetControlVisible(UINT uControlID, BOOL bVisible)
 {
 	CControlBase *pControlBase = GetControl(uControlID);
@@ -1338,7 +1338,7 @@ CControlBase* CDlgBase::SetControlVisible(UINT uControlID, BOOL bVisible)
 	return pControlBase;
 }
 
-// ÏÔÊ¾¿Ø¼ş
+// æ˜¾ç¤ºæ§ä»¶
 CControlBase* CDlgBase::SetControlVisible(CControlBase *pControlBase, BOOL bVisible)
 {
 	if(pControlBase)
@@ -1349,7 +1349,7 @@ CControlBase* CDlgBase::SetControlVisible(CControlBase *pControlBase, BOOL bVisi
 	return pControlBase;
 }
 
-// ½ûÓÃ¿Ø¼ş
+// ç¦ç”¨æ§ä»¶
 CControlBase* CDlgBase::SetControlDisable(UINT uControlID, BOOL bDisable)
 {
 	CControlBase *pControlBase = GetControl(uControlID);
@@ -1361,7 +1361,7 @@ CControlBase* CDlgBase::SetControlDisable(UINT uControlID, BOOL bDisable)
 	return pControlBase;
 }
 
-// ½ûÓÃ¿Ø¼ş
+// ç¦ç”¨æ§ä»¶
 CControlBase* CDlgBase::SetControlDisable(CControlBase *pControlBase, BOOL bDisable)
 {
 	if(pControlBase)
@@ -1372,7 +1372,7 @@ CControlBase* CDlgBase::SetControlDisable(CControlBase *pControlBase, BOOL bDisa
 	return pControlBase;
 }
 
-// ¸üĞÂÊó±êËùÔÚÇøÓò
+// æ›´æ–°é¼ æ ‡æ‰€åœ¨åŒºåŸŸ
 void CDlgBase::UpdateHover()
 {
 	CPoint point;
@@ -1380,7 +1380,7 @@ void CDlgBase::UpdateHover()
 	OnMouseMove(0, point);
 }
 
-// »­¿Ø¼ş
+// ç”»æ§ä»¶
 void CDlgBase::DrawControl(CDC &dc, const CRect &rcUpdate)
 {
 	for (size_t i = 0; i < m_vecArea.size(); i++)
@@ -1426,7 +1426,7 @@ void CDlgBase::OnNcPaint()
 
 LRESULT CDlgBase::OnNcHitTest(CPoint point)
 {
-	// ²»ÄÜ¸Ä±ä´°¿Ú´óĞ¡
+	// ä¸èƒ½æ”¹å˜çª—å£å¤§å°
 	if(!m_bChangeSize)
 	{
 		return	HTCLIENT;
@@ -1483,10 +1483,10 @@ void CDlgBase::OnSize(UINT nType, int cx, int cy)
 {
 	CDialog::OnSize(nType, cx, cy);
 
-	if (!IsIconic())	// ·Ç×îĞ¡»¯×´Ì¬
+	if (!IsIconic())	// éæœ€å°åŒ–çŠ¶æ€
 	{
 		BOOL bIsMaximize = IsZoomed();
-		// ÉèÖÃÔ²½Ç¾ØĞÎºÍÊó±êÍÏ¶¯ÇøÓò¿í¶È
+		// è®¾ç½®åœ†è§’çŸ©å½¢å’Œé¼ æ ‡æ‹–åŠ¨åŒºåŸŸå®½åº¦
 		int border_offset[] = {3, 2, 1};
 		if (bIsMaximize)
 		{				
@@ -1495,14 +1495,14 @@ void CDlgBase::OnSize(UINT nType, int cx, int cy)
 		}
 		else
 		{
-			SetupRegion(border_offset, 0);	// Ôİ²»ÉèÖÃÔ²½Ç¾ØĞÎ
-			m_nFrameLeftRightSpace = m_nFrameTopBottomSpace = 3;	// ÉèÖÃ¿ÉÒÔÊó±êÍÏ¶¯¸Ä±ä´°¿Ú´óĞ¡µÄÇøÓò¿í¶È
+			SetupRegion(border_offset, 0);	// æš‚ä¸è®¾ç½®åœ†è§’çŸ©å½¢
+			m_nFrameLeftRightSpace = m_nFrameTopBottomSpace = 3;	// è®¾ç½®å¯ä»¥é¼ æ ‡æ‹–åŠ¨æ”¹å˜çª—å£å¤§å°çš„åŒºåŸŸå®½åº¦
 		}
 
-		// ÉèÖÃ´°¿Ú±³¾°Í¸Ã÷¶È»òÍ¸Ã÷ÑÕÉ«
+		// è®¾ç½®çª—å£èƒŒæ™¯é€æ˜åº¦æˆ–é€æ˜é¢œè‰²
 		SetupBackTranslucent();
 
-		// Ö÷´°¿ÚµÄÍ¸Ã÷½¥±ä²ãÃÉ°åÔÚ¾Å¹¬¸ñÄ£Ê½»ò·Ç×î´ó»¯Çé¿öÏÂ²Å»á¿É¼û
+		// ä¸»çª—å£çš„é€æ˜æ¸å˜å±‚è’™æ¿åœ¨ä¹å®«æ ¼æ¨¡å¼æˆ–éæœ€å¤§åŒ–æƒ…å†µä¸‹æ‰ä¼šå¯è§
 		CControlBase *pControlBase = GetBaseControl(FRAME_MAINWND);
 		if (pControlBase && (m_nFrameWLT == 0))
 		{
@@ -1510,16 +1510,16 @@ void CDlgBase::OnSize(UINT nType, int cx, int cy)
 		}
 	}
 
-	// ÉèÖÃ´°¿Ú´óĞ¡
+	// è®¾ç½®çª—å£å¤§å°
 	CRect rc;
 	GetClientRect(&rc);
 	SetRect(rc);
 	OnSize(rc);
 
-	// µ÷Õû¸÷¸ö¿Ø¼şµÄÎ»ÖÃ
-	if (!IsIconic())	// ·Ç×îĞ¡»¯×´Ì¬
+	// è°ƒæ•´å„ä¸ªæ§ä»¶çš„ä½ç½®
+	if (!IsIconic())	// éæœ€å°åŒ–çŠ¶æ€
 	{
-		// »ù´¡AREAµÄ´óĞ¡ÉèÖÃ
+		// åŸºç¡€AREAçš„å¤§å°è®¾ç½®
 		for (size_t i = 0; i < m_vecBaseArea.size(); i++)
 		{
 			CControlBase * pControlBase = m_vecBaseArea.at(i);
@@ -1529,7 +1529,7 @@ void CDlgBase::OnSize(UINT nType, int cx, int cy)
 				UpdateHover();
 			}
 		}
-		// »ù´¡¿Ø¼şµÄ´óĞ¡ÉèÖÃ
+		// åŸºç¡€æ§ä»¶çš„å¤§å°è®¾ç½®
 		for (size_t i = 0; i < m_vecBaseControl.size(); i++)
 		{
 			CControlBase * pControlBase = m_vecBaseControl.at(i);
@@ -1540,7 +1540,7 @@ void CDlgBase::OnSize(UINT nType, int cx, int cy)
 			}
 		}
 
-		// ÓÃ»§AREAµÄ´óĞ¡ÉèÖÃ
+		// ç”¨æˆ·AREAçš„å¤§å°è®¾ç½®
 		for (size_t i = 0; i < m_vecArea.size(); i++)
 		{
 			CControlBase * pControlBase = m_vecArea.at(i);
@@ -1550,7 +1550,7 @@ void CDlgBase::OnSize(UINT nType, int cx, int cy)
 				UpdateHover();
 			}
 		}
-		// ÓÃ»§¿Ø¼şµÄ´óĞ¡ÉèÖÃ
+		// ç”¨æˆ·æ§ä»¶çš„å¤§å°è®¾ç½®
 		for (size_t i = 0; i < m_vecControl.size(); i++)
 		{
 			CControlBase * pControlBase = m_vecControl.at(i);
@@ -1565,26 +1565,26 @@ void CDlgBase::OnSize(UINT nType, int cx, int cy)
 	InvalidateRect(NULL);
 }
 
-// ÉèÖÃ´°¿Ú±³¾°Í¸Ã÷¶È»ò±³¾°Í¸Ã÷ÑÕÉ«
+// è®¾ç½®çª—å£èƒŒæ™¯é€æ˜åº¦æˆ–èƒŒæ™¯é€æ˜é¢œè‰²
 void CDlgBase::SetupBackTranslucent()
 {
 	if(m_nBackTranslucent != 255)
 	{
-		// ÉèÖÃ±³¾°Í¸Ã÷¶È
+		// è®¾ç½®èƒŒæ™¯é€æ˜åº¦
  		HWND hWnd = GetSafeHwnd();
  		SetWindowLong(hWnd,GWL_EXSTYLE,GetWindowLong(hWnd,GWL_EXSTYLE) | WS_EX_LAYERED);
 		SetLayeredWindowAttributes(0, m_nBackTranslucent, LWA_ALPHA);
 	}else
 	if(m_crlBackTransParent != RGB(255,255,255))
 	{
-		// ÉèÖÃ±³¾°Í¸Ã÷µÄÑÕÉ«
+		// è®¾ç½®èƒŒæ™¯é€æ˜çš„é¢œè‰²
 		HWND hWnd = GetSafeHwnd();
  		SetWindowLong(hWnd,GWL_EXSTYLE,GetWindowLong(hWnd,GWL_EXSTYLE) | WS_EX_LAYERED);
  		SetLayeredWindowAttributes(m_crlBackTransParent, 255, LWA_COLORKEY );
 	}
 }
 
-// ÉèÖÃ´°¿ÚÇøÓò
+// è®¾ç½®çª—å£åŒºåŸŸ
 void CDlgBase::SetupRegion(int border_offset[], int nSize)
 {
 	CDC* pDC = GetDC();
@@ -1593,7 +1593,7 @@ void CDlgBase::SetupRegion(int border_offset[], int nSize)
 	GetWindowRect(rc);
 	rc.OffsetRect(-rc.left, -rc.top);
 
-	// Í¨¹ıÇøÓò²Ã¼ôµÄ·½Ê½»­´°¿ÚµÄÔ²½Ç¾ØĞÎ,nSize±íÊ¾Ô²½Ç¾ØĞÎµÄ°ë¾¶
+	// é€šè¿‡åŒºåŸŸè£å‰ªçš„æ–¹å¼ç”»çª—å£çš„åœ†è§’çŸ©å½¢,nSizeè¡¨ç¤ºåœ†è§’çŸ©å½¢çš„åŠå¾„
 	CRgn	rgn;
 	rgn.CreateRectRgn(0, 0, rc.Width(), rc.Height());
 	CRgn	rgn_xor;
@@ -1688,31 +1688,31 @@ void CDlgBase::PostNcDestroy()
 
 }
 
-// ´°¿Ú¹Ø±Õ
+// çª—å£å…³é—­
 void CDlgBase::OnClose()
 {
-	// ÖØÔØµÄWM_CLOSEÏûÏ¢´¦Àíº¯Êı,²»×öÈÎºÎÊÂÇé,±ÜÃâÍ¨¹ıWindowsÈÎÎñÀ¸¿ÉÒÔ¹Ø±Õ³ÌĞò
+	// é‡è½½çš„WM_CLOSEæ¶ˆæ¯å¤„ç†å‡½æ•°,ä¸åšä»»ä½•äº‹æƒ…,é¿å…é€šè¿‡Windowsä»»åŠ¡æ å¯ä»¥å…³é—­ç¨‹åº
 	CControlBase* pControlBase = GetBaseControl(NAME_BT_CLOSE);
 	if(pControlBase)
 	{
 		if(pControlBase->GetAction() == ACTION_HIDE_WINDOW)
 		{
-			// Èç¹ûÉèÖÃÁË¶¯×÷ÎªÒş²Ø´°¿Ú,ÔòÖ»Òş²Ø´°¿Ú
+			// å¦‚æœè®¾ç½®äº†åŠ¨ä½œä¸ºéšè—çª—å£,åˆ™åªéšè—çª—å£
 			ShowWindow(SW_HIDE);
 		}else
 		{
-			// ¹Ø±Õ´°¿Ú
+			// å…³é—­çª—å£
 			DoClose();
 		}
 	}
 }
 
-// ×Ô¶¨ÒåµÄ´°¿Ú¹Ø±ÕÏûÏ¢´¦Àí
+// è‡ªå®šä¹‰çš„çª—å£å…³é—­æ¶ˆæ¯å¤„ç†
 LRESULT CDlgBase::OnUserCloseWindow(WPARAM wParam, LPARAM lParam)
 {
-	// É¾³ıËùÓĞ¶¨Ê±Æ÷
+	// åˆ é™¤æ‰€æœ‰å®šæ—¶å™¨
 	CTimer::KillTimer();
-	// wParam²ÎÊı±íÊ¾¶Ô»°¿òµÄ·µ»ØÖµ
+	// wParamå‚æ•°è¡¨ç¤ºå¯¹è¯æ¡†çš„è¿”å›å€¼
 	if(wParam == IDOK)
 	{
 		if(m_pDuiHandler == NULL || m_pDuiHandler->OnValidate())
@@ -1731,15 +1731,15 @@ LRESULT CDlgBase::OnUserCloseWindow(WPARAM wParam, LPARAM lParam)
 	return 0;
 }
 
-// ´°¿Ú×îĞ¡»¯
+// çª—å£æœ€å°åŒ–
 void CDlgBase::OnMinimize()
 {
 	ShowWindow(SW_MINIMIZE);
-	// ×îĞ¡»¯»áµ¼ÖÂËùÓĞÓµÓĞµÄ´°¿Ú²»ÏÔÊ¾,Òò´ËĞèÒªÏÔÊ¾ËùÓĞÓµÓĞµÄ´°¿Ú
+	// æœ€å°åŒ–ä¼šå¯¼è‡´æ‰€æœ‰æ‹¥æœ‰çš„çª—å£ä¸æ˜¾ç¤º,å› æ­¤éœ€è¦æ˜¾ç¤ºæ‰€æœ‰æ‹¥æœ‰çš„çª—å£
 	ShowOwnedPopups();
 }
 
-// ´°¿Ú×î´ó»¯ÇĞ»»
+// çª—å£æœ€å¤§åŒ–åˆ‡æ¢
 BOOL CDlgBase::OnMaximize()
 {
 
@@ -1755,32 +1755,32 @@ BOOL CDlgBase::OnMaximize()
  	}
 }
 
-// ×Ô¶¨ÒåµÄWindowsÏµÍ³¹Ø±ÕÊ±µÄÊı¾İ±£»¤ÏûÏ¢´¦Àí(WM_QUERYENDSESSION)
+// è‡ªå®šä¹‰çš„Windowsç³»ç»Ÿå…³é—­æ—¶çš„æ•°æ®ä¿æŠ¤æ¶ˆæ¯å¤„ç†(WM_QUERYENDSESSION)
 LRESULT CDlgBase::OnQueryEndSession(WPARAM wParam, LPARAM lParam)
 {
-	// WindowsÔÚ¹Ø»úµÄÊ±ºò»áÏòËùÓĞ¶¥²ã´°¿Ú¹ã²¥Ò»¸öÏûÏ¢WM_QUERYENDSESSION£¬
-	// ÆälParam²ÎÊı¿ÉÒÔÇø·ÖÊÇ¹Ø»ú»¹ÊÇ×¢ÏúÓÃ»§(×¢ÏúÓÃ»§Ê±lParamÊÇENDSESSION_LOGOFF)¡£
-	// È»ºóWindows»áµÈµ½ËùÓĞµÄÓ¦ÓÃ³ÌĞò¶¼¶ÔÕâ¸öÏûÏ¢·µ»ØTRUE²Å»á¹Ø»ú£¬
-	// Òò´Ë£¬Ö»ÒªÓ¦ÓÃ³ÌĞò¶ÔÕâ¸öÏûÏ¢µÄ´¦Àí·µ»ØFALSE£¬Windows¾Í²»»á¹Ø»úÁË
+	// Windowsåœ¨å…³æœºçš„æ—¶å€™ä¼šå‘æ‰€æœ‰é¡¶å±‚çª—å£å¹¿æ’­ä¸€ä¸ªæ¶ˆæ¯WM_QUERYENDSESSIONï¼Œ
+	// å…¶lParamå‚æ•°å¯ä»¥åŒºåˆ†æ˜¯å…³æœºè¿˜æ˜¯æ³¨é”€ç”¨æˆ·(æ³¨é”€ç”¨æˆ·æ—¶lParamæ˜¯ENDSESSION_LOGOFF)ã€‚
+	// ç„¶åWindowsä¼šç­‰åˆ°æ‰€æœ‰çš„åº”ç”¨ç¨‹åºéƒ½å¯¹è¿™ä¸ªæ¶ˆæ¯è¿”å›TRUEæ‰ä¼šå…³æœºï¼Œ
+	// å› æ­¤ï¼Œåªè¦åº”ç”¨ç¨‹åºå¯¹è¿™ä¸ªæ¶ˆæ¯çš„å¤„ç†è¿”å›FALSEï¼ŒWindowså°±ä¸ä¼šå…³æœºäº†
 
-	// ÅĞ¶ÏÊÇ·ñÖ÷´°¿Ú
+	// åˆ¤æ–­æ˜¯å¦ä¸»çª—å£
 	if(DuiSystem::Instance()->GetDuiDialog(0) != this)
 	{
 		return 1;
 	}
 
-	// µ÷ÓÃÊÂ¼ş´¦Àí¶ÔÏó½øĞĞ´¦Àí
+	// è°ƒç”¨äº‹ä»¶å¤„ç†å¯¹è±¡è¿›è¡Œå¤„ç†
 	LRESULT nRet = DuiSystem::Instance()->CallDuiHandler(0, _T(""), MSG_WM_QUERYENDSESSION, wParam, lParam);
 	if(nRet != 0)
 	{
-		// Èç¹ûDUIÏûÏ¢±»´¦Àí¹ı,²¢ÇÒÃ»ÓĞ·µ»Ø0,Ôò±íÊ¾µ±Ç°²»ÄÜ½áÊøÏµÍ³»á»°,ĞèÒª¸ø²Ù×÷ÏµÍ³·µ»Ø0
+		// å¦‚æœDUIæ¶ˆæ¯è¢«å¤„ç†è¿‡,å¹¶ä¸”æ²¡æœ‰è¿”å›0,åˆ™è¡¨ç¤ºå½“å‰ä¸èƒ½ç»“æŸç³»ç»Ÿä¼šè¯,éœ€è¦ç»™æ“ä½œç³»ç»Ÿè¿”å›0
 		return 0;
 	}
 
 	return 1;
 }
 
-// ´°¿ÚµÄÆ¤·ôÑ¡Ôñ
+// çª—å£çš„çš®è‚¤é€‰æ‹©
 void CDlgBase::OnSkin()
 {
 	CControlBase* pControlBase = GetBaseControl(NAME_BT_SKIN);
@@ -1798,7 +1798,7 @@ void CDlgBase::OnSkin()
 	pDlgSkin->ShowWindow(SW_SHOW);
 }
 
-// ´°¿Ú×îĞ¡»¯°´Å¥µÄÏûÏ¢´¦Àí
+// çª—å£æœ€å°åŒ–æŒ‰é’®çš„æ¶ˆæ¯å¤„ç†
 LRESULT CDlgBase::OnMessageButtonMin(UINT uMsg, WPARAM wParam, LPARAM lParam)
 {
 	if(MSG_BUTTON_UP == uMsg)
@@ -1809,7 +1809,7 @@ LRESULT CDlgBase::OnMessageButtonMin(UINT uMsg, WPARAM wParam, LPARAM lParam)
 	return 0;
 }
 
-// »»·ô
+// æ¢è‚¤
 LRESULT CDlgBase::OnMessageSkin(WPARAM wParam, LPARAM lParam)
 {
 	if(MSG_CLOSE == wParam)
@@ -1817,7 +1817,7 @@ LRESULT CDlgBase::OnMessageSkin(WPARAM wParam, LPARAM lParam)
 	}else
 	if(MSG_SKIN == wParam)
 	{
-		// Ñ¡ÔñÁË±³¾°Æ¤·ô
+		// é€‰æ‹©äº†èƒŒæ™¯çš®è‚¤
 		SelectInfo *pSelectInfo = (SelectInfo *)lParam;
 		if(pSelectInfo != NULL)
 		{
@@ -1826,28 +1826,28 @@ LRESULT CDlgBase::OnMessageSkin(WPARAM wParam, LPARAM lParam)
 				Color &clr = pSelectInfo->clr;
 				COLORREF crlBack = RGB(clr.GetRed(), clr.GetGreen(), clr.GetBlue());
 				DrawBackground(crlBack);
-				// ±£´æ±³¾°ĞÅÏ¢
+				// ä¿å­˜èƒŒæ™¯ä¿¡æ¯
 				DuiSystem::Instance()->SetWindowBkInfo(BKTYPE_COLOR, 0, crlBack, _T(""));
-				// Ë¢ĞÂËùÓĞ´°¿ÚµÄ±³¾°Æ¤·ô
+				// åˆ·æ–°æ‰€æœ‰çª—å£çš„èƒŒæ™¯çš®è‚¤
 				DuiSystem::Instance()->ResetAllWindowsBkSkin();
 			}else
 			if(pSelectInfo->nType == BKTYPE_IMAGE_RESOURCE)
 			{
-				// »ñÈ¡±³¾°Í¼Æ¬ÎÄ¼şÃû,²¢¼ÓÔØ
+				// è·å–èƒŒæ™¯å›¾ç‰‡æ–‡ä»¶å,å¹¶åŠ è½½
 				CString strBkSkin;
 				strBkSkin.Format(_T("SKIN_PIC_%d"), pSelectInfo->uIndex);
 				CString strImgFile = DuiSystem::Instance()->GetSkin(strBkSkin);
 				LoadBackgroundImage(strImgFile);
-				// ±£´æ±³¾°ĞÅÏ¢
+				// ä¿å­˜èƒŒæ™¯ä¿¡æ¯
 				DuiSystem::Instance()->SetWindowBkInfo(BKTYPE_IMAGE_FILE, 0, RGB(0,0,0), strImgFile);
-				// Ë¢ĞÂËùÓĞ´°¿ÚµÄ±³¾°Æ¤·ô
+				// åˆ·æ–°æ‰€æœ‰çª—å£çš„èƒŒæ™¯çš®è‚¤
 				DuiSystem::Instance()->ResetAllWindowsBkSkin();
 			}
 		}
 	}else
 	if(MSG_SELECT_SKIN == wParam)
 	{
-		// Ñ¡ÔñÆ¤·ôÎÄ¼ş
+		// é€‰æ‹©çš®è‚¤æ–‡ä»¶
  		CFileDialog DlgFile(TRUE,NULL,NULL, OFN_OVERWRITEPROMPT | OFN_HIDEREADONLY ,
  			TEXT("Skin picture(*.bmp;*.png;*.jpg)|*.bmp;*.png;*.jpg||"),this, 0);
  		DlgFile.m_ofn.nFilterIndex=1;
@@ -1862,9 +1862,9 @@ LRESULT CDlgBase::OnMessageSkin(WPARAM wParam, LPARAM lParam)
  			if (0 == strFileType.CompareNoCase(TEXT("bmp")) || 0 == strFileType.CompareNoCase(TEXT("jpg")) || 0 == strFileType.CompareNoCase(TEXT("png")))
  			{
  				LoadBackgroundImage(strFileName);
-				// ±£´æ±³¾°ĞÅÏ¢
+				// ä¿å­˜èƒŒæ™¯ä¿¡æ¯
 				DuiSystem::Instance()->SetWindowBkInfo(BKTYPE_IMAGE_FILE, 0, RGB(0,0,0), strFileName);
-				// Ë¢ĞÂËùÓĞ´°¿ÚµÄ±³¾°Æ¤·ô
+				// åˆ·æ–°æ‰€æœ‰çª—å£çš„èƒŒæ™¯çš®è‚¤
 				DuiSystem::Instance()->ResetAllWindowsBkSkin();
  			}
  		}
@@ -1873,7 +1873,7 @@ LRESULT CDlgBase::OnMessageSkin(WPARAM wParam, LPARAM lParam)
 	return 0;
 }
 
-// ×ªUIÏß³Ì´¦ÀíµÄÈÎÎñ
+// è½¬UIçº¿ç¨‹å¤„ç†çš„ä»»åŠ¡
 LRESULT CDlgBase::OnMessageUITask(WPARAM wParam, LPARAM lParam)
 {
 	DuiVision::IBaseTask* pTask = (DuiVision::IBaseTask*)wParam;
@@ -1898,7 +1898,7 @@ LRESULT CDlgBase::OnMessageUITask(WPARAM wParam, LPARAM lParam)
 	return bRet;
 }
 
-// TrayÏûÏ¢
+// Trayæ¶ˆæ¯
 LRESULT CDlgBase::OnSystemTrayIcon(WPARAM wParam, LPARAM lParam)
 {
 	switch(lParam)
@@ -1908,11 +1908,11 @@ LRESULT CDlgBase::OnSystemTrayIcon(WPARAM wParam, LPARAM lParam)
 			CString strTrayDbClickMsg = DuiSystem::Instance()->GetConfig(_T("trayDbClickMsg"));
 			if(strTrayDbClickMsg == _T("1"))
 			{
-				// ·¢ÍĞÅÌË«»÷ÏûÏ¢
+				// å‘æ‰˜ç›˜åŒå‡»æ¶ˆæ¯
 				DuiSystem::AddDuiActionTask(TRAY_ICON, MSG_TRAY_DBCLICK, 0, 0, NAME_TRAY_ICON, _T(""), this);
 			}else
 			{
-				// ÏÔÊ¾´°¿Ú
+				// æ˜¾ç¤ºçª—å£
 				SetForegroundWindow();
 				ShowWindow(SW_NORMAL);
 				ShowWindow(SW_SHOW);
@@ -1923,47 +1923,47 @@ LRESULT CDlgBase::OnSystemTrayIcon(WPARAM wParam, LPARAM lParam)
 		break;
 	case WM_LBUTTONDOWN:
 		{
-			// ·¢ÍĞÅÌ×ó¼üµ¥»÷ÏûÏ¢
+			// å‘æ‰˜ç›˜å·¦é”®å•å‡»æ¶ˆæ¯
 			DuiSystem::AddDuiActionTask(TRAY_ICON, MSG_TRAY_LBUTTONDOWN, 0, 0, NAME_TRAY_ICON, _T(""), this);
 		}
 		break;
 	case WM_RBUTTONUP:
 		{
-			// ÏÔÊ¾ÍĞÅÌ²Ëµ¥
+			// æ˜¾ç¤ºæ‰˜ç›˜èœå•
 			CString strXmlFile = _T("menu_tray");
-			if(!m_strTrayMenuXml.IsEmpty())	// Èç¹ûÉèÖÃÁËÍĞÅÌ²Ëµ¥ÎÄ¼ş,ÔòÊ¹ÓÃÉèÖÃµÄÎÄ¼ş
+			if(!m_strTrayMenuXml.IsEmpty())	// å¦‚æœè®¾ç½®äº†æ‰˜ç›˜èœå•æ–‡ä»¶,åˆ™ä½¿ç”¨è®¾ç½®çš„æ–‡ä»¶
 			{
 				strXmlFile = m_strTrayMenuXml;
 			}
 			if(!strXmlFile.IsEmpty())
 			{
 				SetForegroundWindow();
-				// ¼ÓÔØ²Ëµ¥¿Ø¼ş
+				// åŠ è½½èœå•æ§ä»¶
 				CDuiMenu* pDuiMenu = new CDuiMenu();
 				pDuiMenu->SetAutoClose(FALSE);
 				pDuiMenu->SetParent(this);
 				if(m_pTrayHandler != NULL)
 				{
-					// ÉèÖÃÊÂ¼ş´¦Àí¶ÔÏó
+					// è®¾ç½®äº‹ä»¶å¤„ç†å¯¹è±¡
 					pDuiMenu->RegisterHandler(m_pTrayHandler);
 				}
 				CPoint point;
 				GetCursorPos(&point);
 				if(pDuiMenu->LoadXmlFile(strXmlFile, this, point, WM_DUI_MENU))
 				{
-					// ¼ÆËã²Ëµ¥µÄÎ»ÖÃ²¢ÏÔÊ¾
+					// è®¡ç®—èœå•çš„ä½ç½®å¹¶æ˜¾ç¤º
 					CRect rc;
 					pDuiMenu->GetWindowRect(&rc);
 					int nMenuWidth = rc.Width();
 					rc.OffsetRect(0, -rc.Height());
-					// Èç¹û³¬³öÆÁÄ»ÓÒ²à·¶Î§,Ôò²Ëµ¥´°¿ÚÍù×óÒÆ¶¯Ò»Ğ©
-					// ×¢:SM_CXSCREEN±íÊ¾Õû¸öÆÁÄ»µÄ¿í¶È,SM_CXFULLSCREEN±íÊ¾ÏÔÊ¾ÆÁÄ»µÄ¿í¶È,²»°üÀ¨ÈÎÎñÀ¸²¿·Ö
+					// å¦‚æœè¶…å‡ºå±å¹•å³ä¾§èŒƒå›´,åˆ™èœå•çª—å£å¾€å·¦ç§»åŠ¨ä¸€äº›
+					// æ³¨:SM_CXSCREENè¡¨ç¤ºæ•´ä¸ªå±å¹•çš„å®½åº¦,SM_CXFULLSCREENè¡¨ç¤ºæ˜¾ç¤ºå±å¹•çš„å®½åº¦,ä¸åŒ…æ‹¬ä»»åŠ¡æ éƒ¨åˆ†
 					int nScreenWidth= GetSystemMetrics(SM_CXSCREEN);
 					if(rc.right > nScreenWidth)
 					{
-						rc.OffsetRect(-nMenuWidth, 0);	// ÒÆ¶¯µ½µ±Ç°²Ëµ¥×ó²à
+						rc.OffsetRect(-nMenuWidth, 0);	// ç§»åŠ¨åˆ°å½“å‰èœå•å·¦ä¾§
 					}
-					// Èç¹û²Ëµ¥¶¥²¿Ğ¡ÓÚÆÁÄ»¶¥²¿,Ôò²Ëµ¥¶¥²¿¸ÄÎªÆÁÄ»¶¥²¿Î»ÖÃ
+					// å¦‚æœèœå•é¡¶éƒ¨å°äºå±å¹•é¡¶éƒ¨,åˆ™èœå•é¡¶éƒ¨æ”¹ä¸ºå±å¹•é¡¶éƒ¨ä½ç½®
 					//int nScreenHeight= GetSystemMetrics(SM_CYSCREEN);
 					if(rc.top < 0)
 					{
@@ -1983,26 +1983,26 @@ LRESULT CDlgBase::OnSystemTrayIcon(WPARAM wParam, LPARAM lParam)
 	return 0;
 }
 
-// ÓÃÓÚ¿ç½ø³Ì´«µİĞÅÏ¢µÄ×¢²áÏûÏ¢,µÚ¶ş¸öDuiVisionÓ¦ÓÃ½ø³ÌÍ¨¹ı´ËÏûÏ¢½«Ò»Ğ©ĞÅÏ¢´«µİ¸øÕıÔÚÔËĞĞµÄDuiVisionÓ¦ÓÃ½ø³Ì
+// ç”¨äºè·¨è¿›ç¨‹ä¼ é€’ä¿¡æ¯çš„æ³¨å†Œæ¶ˆæ¯,ç¬¬äºŒä¸ªDuiVisionåº”ç”¨è¿›ç¨‹é€šè¿‡æ­¤æ¶ˆæ¯å°†ä¸€äº›ä¿¡æ¯ä¼ é€’ç»™æ­£åœ¨è¿è¡Œçš„DuiVisionåº”ç”¨è¿›ç¨‹
 LRESULT CDlgBase::OnCheckItsMe(WPARAM wParam, LPARAM lParam)
 {
-	// wParamÓÃÓÚÇø·ÖÓ¦ÓÃ,lParamÓÃÓÚ¾ßÌåÃüÁî,´«ËÍµÄÄÚÈİÔòÍ¨¹ıÄÚ´æÓ³ÉäÎÄ¼ş´«µİ
-	// ´Ë¿ç½ø³ÆÏûÏ¢ÊÇÍ¨¹ı¹ã²¥·½Ê½´«ËÍµÄ,Òò´ËËùÓĞ´°¿Ú¶¼»áÊÕµ½,Ö»ÓĞÖ÷´°¿ÚĞèÒª´¦Àí´ËÏûÏ¢,ÆäËû´°¿ÚÓ¦¸ÃºöÂÔ
-	// Ö÷´°¿ÚÊÕµ½ÏûÏ¢Ö®ºóµ÷ÓÃÊÂ¼ş´¦Àí¶ÔÏó½øĞĞ´¦Àí
+	// wParamç”¨äºåŒºåˆ†åº”ç”¨,lParamç”¨äºå…·ä½“å‘½ä»¤,ä¼ é€çš„å†…å®¹åˆ™é€šè¿‡å†…å­˜æ˜ å°„æ–‡ä»¶ä¼ é€’
+	// æ­¤è·¨è¿›ç§°æ¶ˆæ¯æ˜¯é€šè¿‡å¹¿æ’­æ–¹å¼ä¼ é€çš„,å› æ­¤æ‰€æœ‰çª—å£éƒ½ä¼šæ”¶åˆ°,åªæœ‰ä¸»çª—å£éœ€è¦å¤„ç†æ­¤æ¶ˆæ¯,å…¶ä»–çª—å£åº”è¯¥å¿½ç•¥
+	// ä¸»çª—å£æ”¶åˆ°æ¶ˆæ¯ä¹‹åè°ƒç”¨äº‹ä»¶å¤„ç†å¯¹è±¡è¿›è¡Œå¤„ç†
 
-	// ÅĞ¶ÏÊÇ·ñÖ÷´°¿Ú
+	// åˆ¤æ–­æ˜¯å¦ä¸»çª—å£
 	if(DuiSystem::Instance()->GetDuiDialog(0) != this)
 	{
 		return FALSE;
 	}
 
-	// ÅĞ¶ÏÊÇ·ñµ±Ç°µÄDuiVisionÓ¦ÓÃ
+	// åˆ¤æ–­æ˜¯å¦å½“å‰çš„DuiVisionåº”ç”¨
 	if(wParam != DuiSystem::Instance()->GetAppID())
 	{
 		return FALSE;
 	}
 
-	// »ñÈ¡ÄÚ´æÓ³ÉäÎÄ¼şµÄÄÚÈİ
+	// è·å–å†…å­˜æ˜ å°„æ–‡ä»¶çš„å†…å®¹
 	// number of characters in memory-mapped file
 	const DWORD dwMemoryFileSize = sizeof(DUI_INTERPROCESS_MSG);
 
@@ -2050,20 +2050,20 @@ LRESULT CDlgBase::OnCheckItsMe(WPARAM wParam, LPARAM lParam)
 	UnmapViewOfFile(pViewOfFile);
 	CloseHandle(hFileMapping);
 
-	// ÅĞ¶ÏÓ¦ÓÃÃûÊÇ·ñÒ»ÖÂ(Ê¹ÓÃappMutex×÷ÎªÓ¦ÓÃÃû)
+	// åˆ¤æ–­åº”ç”¨åæ˜¯å¦ä¸€è‡´(ä½¿ç”¨appMutexä½œä¸ºåº”ç”¨å)
 	CString strAppName = interMsg.wAppName;
 	if(DuiSystem::Instance()->GetConfig(_T("appMutex")) != strAppName)
 	{
 		return FALSE;
 	}
 
-	// µ÷ÓÃÊÂ¼ş´¦Àí¶ÔÏó½øĞĞ´¦Àí
+	// è°ƒç”¨äº‹ä»¶å¤„ç†å¯¹è±¡è¿›è¡Œå¤„ç†
 	DuiSystem::Instance()->CallDuiHandler(interMsg.uControlID, interMsg.wControlName, interMsg.uMsg, interMsg.wParam, (LPARAM)(&interMsg));
 
 	return TRUE;
 }
 
-// ´°¿Ú×î´ó»¯°´Å¥µÄÏûÏ¢´¦Àí
+// çª—å£æœ€å¤§åŒ–æŒ‰é’®çš„æ¶ˆæ¯å¤„ç†
 LRESULT CDlgBase::OnMessageButtonMax(UINT uMsg, WPARAM wParam, LPARAM lParam)
 {
 	if(MSG_BUTTON_UP == uMsg)
@@ -2074,7 +2074,7 @@ LRESULT CDlgBase::OnMessageButtonMax(UINT uMsg, WPARAM wParam, LPARAM lParam)
 	return 0;
 }
 
-// ´°¿Ú¹Ø±Õ°´Å¥µÄÏûÏ¢´¦Àí
+// çª—å£å…³é—­æŒ‰é’®çš„æ¶ˆæ¯å¤„ç†
 LRESULT CDlgBase::OnMessageButtonClose(UINT uMsg, WPARAM wParam, LPARAM lParam)
 {
 	if(MSG_BUTTON_UP == uMsg)
@@ -2085,7 +2085,7 @@ LRESULT CDlgBase::OnMessageButtonClose(UINT uMsg, WPARAM wParam, LPARAM lParam)
 	return 0;
 }
 
-// ´°¿ÚSkin°´Å¥µÄÏûÏ¢´¦Àí
+// çª—å£SkinæŒ‰é’®çš„æ¶ˆæ¯å¤„ç†
 LRESULT CDlgBase::OnMessageButtonSkin(UINT uMsg, WPARAM wParam, LPARAM lParam)
 {
 	if(MSG_BUTTON_UP == uMsg)
@@ -2096,7 +2096,7 @@ LRESULT CDlgBase::OnMessageButtonSkin(UINT uMsg, WPARAM wParam, LPARAM lParam)
 	return 0;
 }
 
-// ´°¿ÚµÄ¼¤»î×´Ì¬¸Ä±äÊ±»áµ÷ÓÃ´Ëº¯Êı
+// çª—å£çš„æ¿€æ´»çŠ¶æ€æ”¹å˜æ—¶ä¼šè°ƒç”¨æ­¤å‡½æ•°
 BOOL CDlgBase::OnNcActivate(BOOL bActive)
 {
 	m_bNCActive = bActive;
@@ -2136,7 +2136,7 @@ BOOL CDlgBase::OnNcActivate(BOOL bActive)
 
 void CDlgBase::PreSubclassWindow()
 {
-	// ÅĞ¶ÏÊÇ·ñÔÊĞíÍÏ×§Í¼Æ¬ÎÄ¼ş×÷Îª´°¿Ú±³¾°
+	// åˆ¤æ–­æ˜¯å¦å…è®¸æ‹–æ‹½å›¾ç‰‡æ–‡ä»¶ä½œä¸ºçª—å£èƒŒæ™¯
 	CString strEnableDragFile = DuiSystem::Instance()->GetConfig(_T("enableDragFile"));
 	if(strEnableDragFile != _T("0"))
 	{
@@ -2146,7 +2146,7 @@ void CDlgBase::PreSubclassWindow()
 	CDialog::PreSubclassWindow();
 }
 
-// ÉèÖÃµ±Ç°µÄTooltip
+// è®¾ç½®å½“å‰çš„Tooltip
 void CDlgBase::SetTooltip(CControlBase* pControl, CString strTooltip, CRect rect, BOOL bControlWidth, int nTipWidth)
 {
 	m_wndToolTip.DelTool(this, 1);
@@ -2160,16 +2160,16 @@ void CDlgBase::SetTooltip(CControlBase* pControl, CString strTooltip, CRect rect
 		}else
 		if(nTipWidth > 0)
 		{
-			// Ö¸¶¨tooltipµÄ¿í¶È
+			// æŒ‡å®štooltipçš„å®½åº¦
 			m_wndToolTip.SetMaxTipWidth(nTipWidth);
 		}
-		m_wndToolTip.AddTool(this, strTooltip, rect, 1);//TooltipÄ¬ÈÏ¶¼ÓÃ1×÷ÎªID, pControl->GetID());
+		m_wndToolTip.AddTool(this, strTooltip, rect, 1);//Tooltipé»˜è®¤éƒ½ç”¨1ä½œä¸ºID, pControl->GetID());
 		m_wndToolTip.Activate(TRUE);
 		m_nTooltipCtrlID = pControl->GetID();
 	}
 }
 
-// Çå³ıµ±Ç°µÄTooltip
+// æ¸…é™¤å½“å‰çš„Tooltip
 void CDlgBase::ClearTooltip()
 {
 	m_wndToolTip.DelTool(this, 1);
@@ -2186,7 +2186,7 @@ void CDlgBase::OnMouseMove(UINT nFlags, CPoint point)
 		tme.dwHoverTime = 1;
 		m_bTracking = ::_TrackMouseEvent(&tme);
 
-		// Èç¹ûÓĞ´°¿Ú¹Ø±Õ¶¨Ê±Æ÷,ÔòÏÈÍ£Ö¹¶¨Ê±Æ÷
+		// å¦‚æœæœ‰çª—å£å…³é—­å®šæ—¶å™¨,åˆ™å…ˆåœæ­¢å®šæ—¶å™¨
 		if(m_bTracking && (m_uTimerAutoClose != 0))
 		{
 			CTimer::KillTimer(m_uTimerAutoClose);
@@ -2196,10 +2196,10 @@ void CDlgBase::OnMouseMove(UINT nFlags, CPoint point)
 	
 	if (m_pControl)
 	{
-		/* ÉèÖÃtooltip¸ÄÎªÍ¨¹ı¿Ø¼şµÄOnMouseMoveº¯ÊıÀ´ÉèÖÃ
+		/* è®¾ç½®tooltipæ”¹ä¸ºé€šè¿‡æ§ä»¶çš„OnMouseMoveå‡½æ•°æ¥è®¾ç½®
 		if((m_nTooltipCtrlID != m_pControl->GetID()) && !m_pControl->GetTooltip().IsEmpty())
 		{
-			// Èç¹ûµ±Ç°¿Ø¼şÓĞTooltip,ÔòÌí¼ÓÒ»¸öTooltip,TooltipµÄIDÄ¬ÈÏ¶¼ÓÃ1
+			// å¦‚æœå½“å‰æ§ä»¶æœ‰Tooltip,åˆ™æ·»åŠ ä¸€ä¸ªTooltip,Tooltipçš„IDé»˜è®¤éƒ½ç”¨1
 			m_wndToolTip.DelTool(this, 1);
 			m_wndToolTip.Activate(FALSE);
 			m_wndToolTip.AddTool(this, m_pControl->GetTooltip(), m_pControl->GetRect(), 1);
@@ -2222,7 +2222,7 @@ void CDlgBase::OnMouseMove(UINT nFlags, CPoint point)
 
 		if(m_bTracking)
 		{
-			// ´°¿Ú×ÔÉíµÄ»ù´¡¿Ø¼ş
+			// çª—å£è‡ªèº«çš„åŸºç¡€æ§ä»¶
 			for (size_t i = 0; i < m_vecBaseControl.size(); i++)
 			{
 				CControlBase * pControlBase = m_vecBaseControl.at(i);
@@ -2237,7 +2237,7 @@ void CDlgBase::OnMouseMove(UINT nFlags, CPoint point)
 				}		
 			}
 			
-			// ÓÃ»§¿Ø¼ş
+			// ç”¨æˆ·æ§ä»¶
 			for (size_t i = 0; i < m_vecControl.size(); i++)
 			{
 				CControlBase * pControlBase = m_vecControl.at(i);
@@ -2278,7 +2278,7 @@ LRESULT CDlgBase::OnMouseLeave(WPARAM wParam, LPARAM lParam)
 		m_pControl = NULL;
 	}
 
-	// Èç¹ûÓĞ´°¿Ú¹Ø±Õ»òÒş²Ø±êÖ¾,Ôò´´½¨¹Ø±Õ¶¨Ê±Æ÷
+	// å¦‚æœæœ‰çª—å£å…³é—­æˆ–éšè—æ ‡å¿—,åˆ™åˆ›å»ºå…³é—­å®šæ—¶å™¨
 	if((m_bAutoClose || m_bAutoHide) && (m_uAutoCloseDelayTime != 0) && (m_uTimerAutoClose == 0))
 	{
 		m_uTimerAutoClose = CTimer::SetTimer(m_uAutoCloseDelayTime);
@@ -2299,7 +2299,7 @@ LRESULT CDlgBase::OnMouseHover(WPARAM wParam, LPARAM lParam)
 	return 0;
 }
 
-// Êó±ê¹öÂÖÏûÏ¢´¦Àí
+// é¼ æ ‡æ»šè½®æ¶ˆæ¯å¤„ç†
 BOOL CDlgBase::OnMouseWheel(UINT nFlags, short zDelta, CPoint pt)
 {
 	ScreenToClient(&pt);
@@ -2315,7 +2315,7 @@ BOOL CDlgBase::OnMouseWheel(UINT nFlags, short zDelta, CPoint pt)
 			continue;
 		}else
 		{
-			// ´°¿Ú×ÔÉíµÄ»ù´¡¿Ø¼ş
+			// çª—å£è‡ªèº«çš„åŸºç¡€æ§ä»¶
 			for (size_t i = 0; i < m_vecBaseControl.size(); i++)
 			{
 				CControlBase * pControlBase = m_vecBaseControl.at(i);
@@ -2326,7 +2326,7 @@ BOOL CDlgBase::OnMouseWheel(UINT nFlags, short zDelta, CPoint pt)
 				}		
 			}
 			
-			// ÓÃ»§¿Ø¼ş
+			// ç”¨æˆ·æ§ä»¶
 			for (size_t i = 0; i < m_vecControl.size(); i++)
 			{
 				CControlBase * pControlBase = m_vecControl.at(i);
@@ -2342,13 +2342,13 @@ BOOL CDlgBase::OnMouseWheel(UINT nFlags, short zDelta, CPoint pt)
     return bResponse;
 }
 
-// Êó±ê×ó¼ü°´ÏÂ
+// é¼ æ ‡å·¦é”®æŒ‰ä¸‹
 void CDlgBase::OnLButtonDown(UINT nFlags, CPoint point)
 {
 	BOOL bIsSelect = false;
 	m_bIsLButtonDblClk = FALSE;
 
-	// Èç¹ûÊó±êµã»÷µÄ²»ÊÇÔ­À´µÄ½¹µã¿Ø¼ş,ÔòÇå³ıÔ­À´µÄ½¹µã¿Ø¼ş
+	// å¦‚æœé¼ æ ‡ç‚¹å‡»çš„ä¸æ˜¯åŸæ¥çš„ç„¦ç‚¹æ§ä»¶,åˆ™æ¸…é™¤åŸæ¥çš„ç„¦ç‚¹æ§ä»¶
 	if((m_pFocusControl != m_pControl) && (m_pFocusControl != NULL))
 	{
 		SetFocusControl(NULL);
@@ -2370,7 +2370,7 @@ void CDlgBase::OnLButtonDown(UINT nFlags, CPoint point)
 		}
 	}
 	
-	// µ±Ç°¿Ø¼şÊÇ·ñ¿ÉÒÔ²¶»ñÊó±ê
+	// å½“å‰æ§ä»¶æ˜¯å¦å¯ä»¥æ•è·é¼ æ ‡
 	if (bIsSelect && !m_bIsSetCapture && ((m_pControl == NULL) || m_pControl->OnCheckMouseResponse(nFlags, point)))
 	{
 		SetCapture();
@@ -2381,14 +2381,14 @@ void CDlgBase::OnLButtonDown(UINT nFlags, CPoint point)
 
 	if(!bHandled && m_bEnableWndDrag)
 	{
-		// ´°¿ÚÍÏ¶¯ÏûÏ¢
+		// çª—å£æ‹–åŠ¨æ¶ˆæ¯
 		PostMessage(WM_NCLBUTTONDOWN,HTCAPTION,MAKELPARAM(point.x, point.y));
 	}
 
 	CDialog::OnLButtonDown(nFlags, point);
 }
 
-// Êó±ê×ó¼ü·Å¿ª
+// é¼ æ ‡å·¦é”®æ”¾å¼€
 void CDlgBase::OnLButtonUp(UINT nFlags, CPoint point)
 {
 	if (m_bIsSetCapture)
@@ -2422,7 +2422,7 @@ void CDlgBase::OnLButtonUp(UINT nFlags, CPoint point)
 	CDialog::OnLButtonUp(nFlags, point);
 }
 
-// Êó±ê×ó¼üË«»÷
+// é¼ æ ‡å·¦é”®åŒå‡»
 void CDlgBase::OnLButtonDblClk(UINT nFlags, CPoint point)
 {
 	m_bIsLButtonDblClk = TRUE;
@@ -2445,7 +2445,7 @@ void CDlgBase::OnLButtonDblClk(UINT nFlags, CPoint point)
 		}
 	}
 
-	// ÅĞ¶ÏÊÇ·ñ´æÔÚ´°¿Ú±êÌâÇøÓò¿Ø¼ş
+	// åˆ¤æ–­æ˜¯å¦å­˜åœ¨çª—å£æ ‡é¢˜åŒºåŸŸæ§ä»¶
 	CControlBase* pCaptionControl = GetBaseControl(NAME_AREA_CAPTION);
 	if(pCaptionControl == NULL)
 	{
@@ -2453,7 +2453,7 @@ void CDlgBase::OnLButtonDblClk(UINT nFlags, CPoint point)
 	}
 	if(pCaptionControl)
 	{
-		// Èç¹ûÕÒµ½´°¿Ú±êÌâÇøÓò¿Ø¼ş,²¢ÇÒÊó±êÔÚ´Ë¿Ø¼ş·¶Î§ÄÚ,Ôò·¢ËÍ·Ç¿Í»§ÇøË«»÷ÊÂ¼ş,´¥·¢´°¿ÚµÄ×î´ó»¯ºÍ»Ö¸´
+		// å¦‚æœæ‰¾åˆ°çª—å£æ ‡é¢˜åŒºåŸŸæ§ä»¶,å¹¶ä¸”é¼ æ ‡åœ¨æ­¤æ§ä»¶èŒƒå›´å†…,åˆ™å‘é€éå®¢æˆ·åŒºåŒå‡»äº‹ä»¶,è§¦å‘çª—å£çš„æœ€å¤§åŒ–å’Œæ¢å¤
 		CRect rcCaption = pCaptionControl->GetRect();
 		if(rcCaption.PtInRect(point))
 		{
@@ -2464,13 +2464,13 @@ void CDlgBase::OnLButtonDblClk(UINT nFlags, CPoint point)
 	CDialog::OnLButtonDblClk(nFlags, point);
 }
 
-// Êó±êÓÒ¼ü°´ÏÂ
+// é¼ æ ‡å³é”®æŒ‰ä¸‹
 void CDlgBase::OnRButtonDown(UINT nFlags, CPoint point)
 {
 	BOOL bIsSelect = false;
 	m_bIsRButtonDblClk = FALSE;
 
-	// Èç¹ûÊó±êµã»÷µÄ²»ÊÇÔ­À´µÄ½¹µã¿Ø¼ş,ÔòÇå³ıÔ­À´µÄ½¹µã¿Ø¼ş
+	// å¦‚æœé¼ æ ‡ç‚¹å‡»çš„ä¸æ˜¯åŸæ¥çš„ç„¦ç‚¹æ§ä»¶,åˆ™æ¸…é™¤åŸæ¥çš„ç„¦ç‚¹æ§ä»¶
 	if((m_pFocusControl != m_pControl) && (m_pFocusControl != NULL))
 	{
 		SetFocusControl(NULL);
@@ -2495,7 +2495,7 @@ void CDlgBase::OnRButtonDown(UINT nFlags, CPoint point)
 	CDialog::OnRButtonDown(nFlags, point);
 }
 
-// Êó±êÓÒ¼ü·Å¿ª
+// é¼ æ ‡å³é”®æ”¾å¼€
 void CDlgBase::OnRButtonUp(UINT nFlags, CPoint point)
 {
 	m_bIsRButtonDown = FALSE;
@@ -2523,7 +2523,7 @@ void CDlgBase::OnRButtonUp(UINT nFlags, CPoint point)
 	CDialog::OnRButtonUp(nFlags, point);
 }
 
-// Êó±êÓÒ¼üË«»÷
+// é¼ æ ‡å³é”®åŒå‡»
 void CDlgBase::OnRButtonDblClk(UINT nFlags, CPoint point)
 {
 	m_bIsRButtonDblClk = TRUE;
@@ -2549,13 +2549,13 @@ void CDlgBase::OnRButtonDblClk(UINT nFlags, CPoint point)
 	CDialog::OnRButtonDblClk(nFlags, point);
 }
 
-// ¼üÅÌÊÂ¼ş´¦Àí(ÒÆµ½PreTranslateMessageÖĞÊµÏÖ×Ó¿Ø¼şµÄ¼üÅÌÊÂ¼şµ÷ÓÃ,ÒòÎª¶Ô»°¿òµÄOnKeyDownº¯ÊıÓĞ¾ÖÏŞĞÔ,²»ÄÜ²¶»ñµ½ALTµÈ×éºÏ¼ü)
+// é”®ç›˜äº‹ä»¶å¤„ç†(ç§»åˆ°PreTranslateMessageä¸­å®ç°å­æ§ä»¶çš„é”®ç›˜äº‹ä»¶è°ƒç”¨,å› ä¸ºå¯¹è¯æ¡†çš„OnKeyDownå‡½æ•°æœ‰å±€é™æ€§,ä¸èƒ½æ•è·åˆ°ALTç­‰ç»„åˆé”®)
 void CDlgBase::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
 {
 	CDialog::OnKeyDown(nChar, nRepCnt, nFlags);
 }
 
-// ÏûÏ¢Ô¤´¦Àí
+// æ¶ˆæ¯é¢„å¤„ç†
 BOOL CDlgBase::PreTranslateMessage(MSG* pMsg)
 {
 	if (m_mapMsg.find(pMsg->message) != m_mapMsg.end())
@@ -2563,18 +2563,18 @@ BOOL CDlgBase::PreTranslateMessage(MSG* pMsg)
 		//SendMessage(pMsg->message,pMsg->wParam,pMsg->lParam);
 		DuiSystem::AddDuiActionTask(1,pMsg->message,pMsg->wParam,pMsg->lParam,m_mapMsg[pMsg->message],_T(""),NULL);
 	}
-	if (( pMsg->message == WM_KEYDOWN ) || ( pMsg->message == WM_SYSKEYDOWN ))	// ¼üÅÌ°´ÏÂÏûÏ¢
+	if (( pMsg->message == WM_KEYDOWN ) || ( pMsg->message == WM_SYSKEYDOWN ))	// é”®ç›˜æŒ‰ä¸‹æ¶ˆæ¯
 	{
-		// ¼üÅÌÊÂ¼ş´¦Àí
+		// é”®ç›˜äº‹ä»¶å¤„ç†
 		UINT nFlags = 0;
 		BOOL bCtrl=::GetKeyState(VK_CONTROL)&0x8000;
 		BOOL bShift=::GetKeyState(VK_SHIFT)&0x8000;
-		BOOL bAlt=::GetKeyState(VK_MENU)&0x8000;	// ALT¼üÖ»ÓĞWM_SYSKEYDOWNÏûÏ¢²ÅÄÜ²¶»ñµ½
+		BOOL bAlt=::GetKeyState(VK_MENU)&0x8000;	// ALTé”®åªæœ‰WM_SYSKEYDOWNæ¶ˆæ¯æ‰èƒ½æ•è·åˆ°
 		nFlags |= (bCtrl ? VK_CONTROL : 0);
 		nFlags |= (bShift ? VK_SHIFT : 0);
 		nFlags |= (bAlt ? VK_MENU : 0);
 
-		// ´¦Àítab¼üºÍshift+tab¼ü,ÇĞ»»½¹µã
+		// å¤„ç†tabé”®å’Œshift+tabé”®,åˆ‡æ¢ç„¦ç‚¹
 		if((pMsg->wParam == VK_TAB) && (nFlags == 0))
 		{
 			CControlBase* pFocusControl = GetFocusControl();
@@ -2596,13 +2596,13 @@ BOOL CDlgBase::PreTranslateMessage(MSG* pMsg)
 			}
 		}
 
-		// µ±Ç°¿Ø¼şÊÇ·ñÄÜ´¦Àí
+		// å½“å‰æ§ä»¶æ˜¯å¦èƒ½å¤„ç†
 		if (m_pControl && m_pControl->OnKeyDown(pMsg->wParam, 1, nFlags))
 		{
 			return TRUE;
 		}
 
-		// ´°¿Ú×ÔÉíµÄ»ù´¡¿Ø¼ş
+		// çª—å£è‡ªèº«çš„åŸºç¡€æ§ä»¶
 		for (size_t i = 0; i < m_vecBaseControl.size(); i++)
 		{
 			CControlBase * pControlBase = m_vecBaseControl.at(i);
@@ -2612,7 +2612,7 @@ BOOL CDlgBase::PreTranslateMessage(MSG* pMsg)
 			}		
 		}
 		
-		// ÓÃ»§¿Ø¼ş
+		// ç”¨æˆ·æ§ä»¶
 		for (size_t i = 0; i < m_vecControl.size(); i++)
 		{
 			CControlBase * pControlBase = m_vecControl.at(i);
@@ -2622,7 +2622,7 @@ BOOL CDlgBase::PreTranslateMessage(MSG* pMsg)
 			}	
 		}
 
-		// Èç¹û¿Ø¼şÃ»ÓĞ´¦Àí,Ôò»Ø³µºÍESC°´¼üĞèÒªÆÁ±Îµô
+		// å¦‚æœæ§ä»¶æ²¡æœ‰å¤„ç†,åˆ™å›è½¦å’ŒESCæŒ‰é”®éœ€è¦å±è”½æ‰
 		if(pMsg->wParam == VK_ESCAPE) 
 		{
 			return TRUE;
@@ -2632,24 +2632,24 @@ BOOL CDlgBase::PreTranslateMessage(MSG* pMsg)
 			return TRUE;
 		}
 	}else
-	if (( pMsg->message == WM_KEYUP ) || ( pMsg->message == WM_SYSKEYUP ))	// ¼üÅÌ·Å¿ªÏûÏ¢
+	if (( pMsg->message == WM_KEYUP ) || ( pMsg->message == WM_SYSKEYUP ))	// é”®ç›˜æ”¾å¼€æ¶ˆæ¯
 	{
-		// ¼üÅÌÊÂ¼ş´¦Àí
+		// é”®ç›˜äº‹ä»¶å¤„ç†
 		UINT nFlags = 0;
 		BOOL bCtrl=::GetKeyState(VK_CONTROL)&0x8000;
 		BOOL bShift=::GetKeyState(VK_SHIFT)&0x8000;
-		BOOL bAlt=::GetKeyState(VK_MENU)&0x8000;	// ALT¼üÖ»ÓĞWM_SYSKEYDOWNÏûÏ¢²ÅÄÜ²¶»ñµ½
+		BOOL bAlt=::GetKeyState(VK_MENU)&0x8000;	// ALTé”®åªæœ‰WM_SYSKEYDOWNæ¶ˆæ¯æ‰èƒ½æ•è·åˆ°
 		nFlags |= (bCtrl ? VK_CONTROL : 0);
 		nFlags |= (bShift ? VK_SHIFT : 0);
 		nFlags |= (bAlt ? VK_MENU : 0);
 
-		// µ±Ç°¿Ø¼şÊÇ·ñÄÜ´¦Àí
+		// å½“å‰æ§ä»¶æ˜¯å¦èƒ½å¤„ç†
 		if (m_pControl && m_pControl->OnKeyUp(pMsg->wParam, 1, nFlags))
 		{
 			return TRUE;
 		}
 
-		// ´°¿Ú×ÔÉíµÄ»ù´¡¿Ø¼ş
+		// çª—å£è‡ªèº«çš„åŸºç¡€æ§ä»¶
 		for (size_t i = 0; i < m_vecBaseControl.size(); i++)
 		{
 			CControlBase * pControlBase = m_vecBaseControl.at(i);
@@ -2659,7 +2659,7 @@ BOOL CDlgBase::PreTranslateMessage(MSG* pMsg)
 			}		
 		}
 		
-		// ÓÃ»§¿Ø¼ş
+		// ç”¨æˆ·æ§ä»¶
 		for (size_t i = 0; i < m_vecControl.size(); i++)
 		{
 			CControlBase * pControlBase = m_vecControl.at(i);
@@ -2677,7 +2677,7 @@ BOOL CDlgBase::PreTranslateMessage(MSG* pMsg)
 		//{
 		//	::SendMessage(pFocusControl->GetNativeHWnd(), WM_CHAR, pMsg->wParam, pMsg->lParam);
 		//}
-		// ÓÃ»§¿Ø¼ş
+		// ç”¨æˆ·æ§ä»¶
 		for (size_t i = 0; i < m_vecControl.size(); i++)
 		{
 			CControlBase * pControlBase = m_vecControl.at(i);
@@ -2697,10 +2697,10 @@ BOOL CDlgBase::PreTranslateMessage(MSG* pMsg)
 	return CDialog::PreTranslateMessage(pMsg);
 }
 
-// ¶¨Ê±Æ÷ÏûÏ¢(ÖØÔØCTimerÀàµÄº¯Êı)
+// å®šæ—¶å™¨æ¶ˆæ¯(é‡è½½CTimerç±»çš„å‡½æ•°)
 void CDlgBase::OnTimer(UINT uTimerID)
 {
-	if(m_uTimerAnimation == uTimerID)	// ¶¯»­¶¨Ê±Æ÷
+	if(m_uTimerAnimation == uTimerID)	// åŠ¨ç”»å®šæ—¶å™¨
 	{
 		for (size_t i = 0; i < m_vecBaseControl.size(); i++)
 		{
@@ -2720,28 +2720,28 @@ void CDlgBase::OnTimer(UINT uTimerID)
 			}		
 		}
 	}else
-	if(m_uTimerAutoClose == uTimerID)	// ´°¿Ú×Ô¶¯¹Ø±ÕµÄ¶¨Ê±Æ÷
+	if(m_uTimerAutoClose == uTimerID)	// çª—å£è‡ªåŠ¨å…³é—­çš„å®šæ—¶å™¨
 	{
 		CTimer::KillTimer(m_uTimerAutoClose);
 		m_uTimerAutoClose = 0;
 		if(m_bAutoHide)
 		{
-			ShowWindow(SW_HIDE);	// Òş²Ø´°¿ÚÄ£Ê½
+			ShowWindow(SW_HIDE);	// éšè—çª—å£æ¨¡å¼
 		}else
 		{
-			DoClose();	// ¹Ø±Õ´°¿ÚÄ£Ê½
+			DoClose();	// å…³é—­çª—å£æ¨¡å¼
 		}
 	}
 }
 
-// ¶¨Ê±Æ÷ÏûÏ¢(´ø¶¨Ê±Æ÷Ãû×ÖµÄ¶¨Ê±º¯Êı,ÖØÔØCTimerÀàµÄº¯Êı)
+// å®šæ—¶å™¨æ¶ˆæ¯(å¸¦å®šæ—¶å™¨åå­—çš„å®šæ—¶å‡½æ•°,é‡è½½CTimerç±»çš„å‡½æ•°)
 void CDlgBase::OnTimer(UINT uTimerID, CString strTimerName)
 {
-	// Ó¦ÓÃ´´½¨µÄ¶¨Ê±Æ÷¶¼µ÷ÓÃÊÂ¼ş´¦Àí¶ÔÏóµÄ¶¨Ê±´¦Àíº¯Êı
+	// åº”ç”¨åˆ›å»ºçš„å®šæ—¶å™¨éƒ½è°ƒç”¨äº‹ä»¶å¤„ç†å¯¹è±¡çš„å®šæ—¶å¤„ç†å‡½æ•°
 	DuiSystem::Instance()->CallDuiHandlerTimer(uTimerID, strTimerName);
 }
 
-// »ù´¡¿Ø¼şµÄÏûÏ¢ÏìÓ¦
+// åŸºç¡€æ§ä»¶çš„æ¶ˆæ¯å“åº”
 LRESULT CDlgBase::OnBaseMessage(UINT uID, UINT uMsg, WPARAM wParam, LPARAM lParam)
 {
 	CControlBase* pControlBase = GetBaseControl(uID);
@@ -2753,7 +2753,7 @@ LRESULT CDlgBase::OnBaseMessage(UINT uID, UINT uMsg, WPARAM wParam, LPARAM lPara
 
 	if(pControlBase != NULL)
 	{
-		// 2.ÅĞ¶ÏÊÇ·ñ¼¸¸öÏµÍ³°´Å¥,Ö´ĞĞÏàÓ¦µÄÏµÍ³²Ù×÷
+		// 2.åˆ¤æ–­æ˜¯å¦å‡ ä¸ªç³»ç»ŸæŒ‰é’®,æ‰§è¡Œç›¸åº”çš„ç³»ç»Ÿæ“ä½œ
 		if(pControlBase->IsThisObject(BT_MIN, NAME_BT_MIN))
 		{
 			OnMessageButtonMin(uMsg, wParam, lParam);
@@ -2766,11 +2766,11 @@ LRESULT CDlgBase::OnBaseMessage(UINT uID, UINT uMsg, WPARAM wParam, LPARAM lPara
 		{
 			if(pControlBase->GetAction() == ACTION_HIDE_WINDOW)
 			{
-				// Èç¹ûÉèÖÃÁË¶¯×÷ÎªÒş²Ø´°¿Ú,ÔòÖ»Òş²Ø´°¿Ú
+				// å¦‚æœè®¾ç½®äº†åŠ¨ä½œä¸ºéšè—çª—å£,åˆ™åªéšè—çª—å£
 				ShowWindow(SW_HIDE);
 			}else
 			{
-				// ¹Ø±Õ´°¿Ú
+				// å…³é—­çª—å£
 				OnMessageButtonClose(uMsg, wParam, lParam);
 			}
 		}
@@ -2780,7 +2780,7 @@ LRESULT CDlgBase::OnBaseMessage(UINT uID, UINT uMsg, WPARAM wParam, LPARAM lPara
 		}
 		else
 		{
-			// 3.²»ÊÇÏµÍ³°´Å¥,Ôòµ÷ÓÃ¸÷¸ö¶Ô»°¿òÄ¬ÈÏ¿Ø¼şµÄÊÂ¼ş´¦Àíº¯Êı
+			// 3.ä¸æ˜¯ç³»ç»ŸæŒ‰é’®,åˆ™è°ƒç”¨å„ä¸ªå¯¹è¯æ¡†é»˜è®¤æ§ä»¶çš„äº‹ä»¶å¤„ç†å‡½æ•°
 			for (size_t i = 0; i < m_vecBaseControl.size(); i++)
 			{
 				CControlBase * pControlBase = m_vecBaseControl.at(i);
@@ -2793,7 +2793,7 @@ LRESULT CDlgBase::OnBaseMessage(UINT uID, UINT uMsg, WPARAM wParam, LPARAM lPara
 	}else
 	if(pControl != NULL)
 	{
-		// ¶Ô»°¿ò¿Ø¼şµÄÊÂ¼ş´¦Àí
+		// å¯¹è¯æ¡†æ§ä»¶çš„äº‹ä»¶å¤„ç†
 		OnMessage(uID, uMsg, wParam, lParam);
 	}
 
@@ -2899,10 +2899,10 @@ LRESULT CDlgBase::OnControlUpdate(CRect rcUpdate, BOOL bUpdate, CControlBase *pU
 	return 0L; 
 };
 
-// DUIÏûÏ¢´¦Àíº¯Êı
+// DUIæ¶ˆæ¯å¤„ç†å‡½æ•°
 LRESULT CDlgBase::OnMessage(UINT uID, UINT Msg, WPARAM wParam, LPARAM lParam)
 {
-	// ±éÀúÃ¿¸ö¿Ø¼ş£¬¿´ÄÄ¸ö¿Ø¼şÊÇ´ËID£¬Ôò½øĞĞÊÂ¼şµÄ´¦Àí
+	// éå†æ¯ä¸ªæ§ä»¶ï¼Œçœ‹å“ªä¸ªæ§ä»¶æ˜¯æ­¤IDï¼Œåˆ™è¿›è¡Œäº‹ä»¶çš„å¤„ç†
 	CControlBase * pThisControlBase = NULL;
 	for (size_t i = 0; i < m_vecControl.size(); i++)
 	{
@@ -2917,7 +2917,7 @@ LRESULT CDlgBase::OnMessage(UINT uID, UINT Msg, WPARAM wParam, LPARAM lParam)
 	return 0;
 }
 
-// ´ò¿ªµ¯³ö¶Ô»°¿ò
+// æ‰“å¼€å¼¹å‡ºå¯¹è¯æ¡†
 void CDlgBase::OpenDlgPopup(CDlgPopup *pWndPopup, CRect rc, UINT uMessageID, BOOL bShow)
 {
 	ASSERT(pWndPopup);
@@ -2931,7 +2931,7 @@ void CDlgBase::OpenDlgPopup(CDlgPopup *pWndPopup, CRect rc, UINT uMessageID, BOO
 	}
 }
 
-// ¹Ø±Õµ¯³ö¶Ô»°¿ò
+// å…³é—­å¼¹å‡ºå¯¹è¯æ¡†
 void CDlgBase::CloseDlgPopup()
 {
 	if(m_pWndPopup)
@@ -2955,6 +2955,6 @@ void CDlgBase::OnDestroy()
 {
 	__super::OnDestroy();
 
-	// ½áÊø¶¨Ê±Æ÷
+	// ç»“æŸå®šæ—¶å™¨
 	CTimer::KillTimer();
 }
